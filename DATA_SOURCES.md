@@ -31,8 +31,30 @@ This is a discovery check, not evidence that the agencies have no feeds.
 
 Next checks: obtain a station-level OpenAQ/CPCB response with timestamp, Chennai station identity and units; ask MTC/CMRL for an official feed or documented GTFS endpoint. Until then, sensor air quality and transit data remain unavailable.
 
-## Live verification checklist (not yet executed from the build sandbox)
-1. `curl "https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&current=temperature_2m&timeformat=unixtime"` returns `current.time`.
-2. `curl "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=13.0827&longitude=80.2707&current=us_aqi,pm2_5"` returns values.
-3. With the key set, `curl localhost:3000/api/traffic` returns `corridors[].ok=true`; check each `matched` position is on the intended road and adjust `config.json` if not.
-4. Confirm the incidents `fields` query returns 200 (a 400 means a field name was rejected — check `incidents.error`).
+## Live verification checklist
+
+### Status: commands ready — run from your machine with the server running
+
+**A3-1 — Open-Meteo Forecast**
+```bash
+curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m&past_days=1&forecast_days=1&timeformat=unixtime&timezone=Asia%2FKolkata"
+```
+Pass: `current.time` is a unix integer and `current.temperature_2m` is a number. See `docs/evidence/A3-openmeteo.md`.
+
+**A3-2 — Open-Meteo Air Quality (CAMS)**
+```bash
+curl -s "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=13.0827&longitude=80.2707&current=us_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly=us_aqi,pm2_5&past_days=1&forecast_days=1&timeformat=unixtime&timezone=Asia%2FKolkata"
+```
+Pass: `current.time` present and `current.us_aqi` is a finite number. See `docs/evidence/A3-openmeteo.md`.
+
+**A1/A2 — TomTom Traffic (needs `TOMTOM_API_KEY` in `.env` and `node server.js` running)**
+```bash
+curl -s http://localhost:3000/api/traffic
+```
+Pass: all `corridors[].ok=true`; `incidents.ok=true`. Check each `matched` position against config.json coordinates. See `docs/evidence/A1-corridors.md` and `docs/evidence/A2-incidents.md`.
+
+**B — Sensor air quality (OpenAQ)**
+```bash
+curl -s "https://api.openaq.org/v3/locations?coordinates=13.0827,80.2707&radius=25000&limit=20"
+```
+Pass: at least one Chennai station with `lastUpdated` < 7 days and `pm25` parameter. See `docs/evidence/B-sensor-airquality.md`.
