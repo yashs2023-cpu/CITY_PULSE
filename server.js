@@ -67,10 +67,30 @@ const server = http.createServer(async (req, res) => {
       if (!KEY) return send(res, 503, { error: 'TOMTOM_API_KEY is not configured on the server (see .env.example)' });
       try { return send(res, 200, await traffic()); } catch (e) { logLine({ source: 'traffic', origin: 'server', ok: false, error: e.message }); return send(res, 502, { error: e.message }); }
     }
-    if (u.pathname === '/api/log' && req.method === 'POST') { // dashboard reports each provider fetch outcome (for uptime metrics)
-      let d = ''; for await (const ch of req) { d += ch; if (d.length > 2000) return send(res, 413, { error: 'too large' }); }
+    if (u.pathname === '/api/log' && req.method === 'POST') { // dashboard reports each provider fetch outcome (for uptime + T3 simulator validation)
+      let d = ''; for await (const ch of req) { d += ch; if (d.length > 4000) return send(res, 413, { error: 'too large' }); }
       const b = JSON.parse(d || '{}'); if (!['weather', 'airQuality', 'traffic', 'notices'].includes(b.source)) return send(res, 400, { error: 'bad source' });
-      logLine({ source: b.source, origin: 'dashboard', ok: !!b.ok, ms: Number.isFinite(b.ms) ? Math.round(b.ms) : null, error: b.error ? String(b.error).slice(0, 200) : null }); return send(res, 204, '');
+      // Core uptime fields (existing – log-summary.js depends on these)
+      const line = {
+        source: b.source, origin: 'dashboard', ok: !!b.ok,
+        ms: Number.isFinite(b.ms) ? Math.round(b.ms) : null,
+        error: b.error ? String(b.error).slice(0, 200) : null
+      };
+      // Extended metric fields (L4 – T3 evaluate-simulator.js uses predicted vs actual)
+      // Accept an array of readings or a single reading under "readings" / "reading"
+      const readings = Array.isArray(b.readings) ? b.readings : (b.reading ? [b.reading] : []);
+      if (readings.length) {
+        line.readings = readings.map(r => ({
+          metric:     typeof r.metric   === 'string'  ? r.metric.slice(0, 80)   : null,
+          value:      Number.isFinite(r.value)        ? r.value                 : null,
+          unit:       typeof r.unit     === 'string'  ? r.unit.slice(0, 40)     : null,
+          location:   typeof r.location === 'string'  ? r.location.slice(0, 80) : null,
+          observedAt: Number.isFinite(r.observedAt)   ? r.observedAt            : null,
+          dataType:   typeof r.dataType === 'string'  ? r.dataType.slice(0, 40) : null,
+          status:     typeof r.status   === 'string'  ? r.status.slice(0, 40)   : null
+        }));
+      }
+      logLine(line); return send(res, 204, '');
     }
     const f = u.pathname === '/' ? 'project_citypulse.html' : path.basename(u.pathname);
     const ok = ['project_citypulse.html', 'README.md', 'DATA_SOURCES.md'].includes(f);
@@ -78,5 +98,40 @@ const server = http.createServer(async (req, res) => {
     send(res, 200, fs.readFileSync(path.join(__dirname, f)), MIME[path.extname(f)] || 'text/plain');
   } catch (e) { send(res, 500, { error: e.message }); }
 });
-if (require.main === module) server.listen(PORT, () => console.log(`CityPulse on http://localhost:${PORT}  (TomTom key ${KEY ? 'configured' : 'NOT configured – traffic/infrastructure will show Unavailable'})`));
-module.exports = { parseFlow, parseIncidents };
+// ── Server-side poller ──────────────────────────────────────────────────────
+// Keeps logs/fetch-log.jsonl growing even when no browser tab is open.
+// Runs the full traffic() call (Flow + Incidents) on the configured interval
+// and logs a line with source:"traffic", origin:"server-poller".
+// Weather and air-quality are browser-direct (no key) – they are not polled
+// here to avoid redundant model-estimate calls; only traffic needs a server key.
+const POLL_MS = TTL; // match the cache TTL so each poll gets a fresh response
+let pollerTimer = null;
+function startPoller() {
+  if (!KEY) { logLine({ source: 'server-poller', origin: 'server', ok: false, error: 'TOMTOM_API_KEY not set – poller idle' }); return; }
+  const run = async () => {
+    try {
+      // Force cache bypass by clearing it before the poll call
+      cache = null;
+      const data = await traffic();
+      logLine({ source: 'traffic', origin: 'server-poller', ok: true,
+        corridorsOk: data.corridors.filter(c => c.ok).length,
+        corridorsTotal: data.corridors.length,
+        incidentsOk: data.incidents.ok,
+        fetchedAt: data.fetchedAt });
+    } catch (e) {
+      logLine({ source: 'traffic', origin: 'server-poller', ok: false, error: e.message });
+    }
+    pollerTimer = setTimeout(run, POLL_MS);
+  };
+  // First run after one interval (dashboard may also call on startup)
+  pollerTimer = setTimeout(run, POLL_MS);
+  console.log(`Server-side traffic poller started (every ${POLL_MS / 1000}s)`);
+}
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`CityPulse on http://localhost:${PORT}  (TomTom key ${KEY ? 'configured' : 'NOT configured – traffic/infrastructure will show Unavailable'})`);
+    startPoller();
+  });
+}
+module.exports = { parseFlow, parseIncidents, startPoller };

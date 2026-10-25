@@ -1,5 +1,7 @@
 # CityPulse — Live-Data Smart City Dashboard (Chennai)
 
+[![CI](https://github.com/yashs2023-cpu/CITY_PULSE/actions/workflows/ci.yml/badge.svg)](https://github.com/yashs2023-cpu/CITY_PULSE/actions/workflows/ci.yml)
+
 Software Metrics project. The original nine-section prototype is preserved; every random-number generator was removed and the dashboard now runs on a shared live-data layer.
 
 ## Architecture
