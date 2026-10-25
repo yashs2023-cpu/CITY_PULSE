@@ -86,5 +86,74 @@ async function boot(router){
   d=dom.window.document; ok(dom.window.eval('store').r.temp&&dom.window.eval('store').src.weather.state==='stale','old reading retained and source marked stale');
   ok(d.getElementById('env-cards').textContent.includes('stale')&&dom.window.eval('store').r.temp.observedAt===NOW*1000,'stale label shown, original observation time preserved');
   dom.window.close();
+
+  // ── Trust Score (L3) ────────────────────────────────────────────────────
+  console.log('Trust score (L3)');
+  // Boot with a fresh success-path fixture to get real readings in the store
+  dom=await boot(u=>{
+    if(u.includes('air-quality-api')) return J([aqLoc(42,118),aqLoc(40,110),aqLoc(41,112),aqLoc(43,120),aqLoc(44,121),aqLoc(40,111)]);
+    if(u.includes('api.open-meteo.com')) return J(wx);
+    if(u.endsWith('/api/traffic')) return J(tr);
+    if(u.endsWith('/api/public/notices')) return J(notices);
+    if(u.endsWith('/api/config')||u.endsWith('/api/health')) return J({error:'x'},404);
+    return J({},404);
+  });
+  const s2=dom.window.eval('store');
+  // Every stored reading must have a trustScore that is an integer 0–100
+  ok(Object.values(s2.r).every(r=>Number.isInteger(r.trustScore)&&r.trustScore>=0&&r.trustScore<=100),
+    'every reading has an integer trustScore in [0,100]');
+  // model readings (weather/air quality) score ≤ provider-reported readings
+  // because source-type component is lower (model=40 vs provider=80)
+  const model = Object.values(s2.r).find(r=>r.dataType==='model');
+  const prov  = Object.values(s2.r).find(r=>r.dataType==='provider');
+  ok(model && prov && model.trustScore < prov.trustScore,
+    'model readings score lower than provider-reported readings (source-type weight)');
+  // derived readings score lower than model *when freshness is held equal*
+  // (at age=0, derived=20 source pts vs model=40 source pts, completeness equal)
+  const derivFresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'derived', srcId:'weather'});
+  })()`);
+  const modelFresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  ok(derivFresh < modelFresh,
+    'derived readings score lower than model readings when freshness is equal (source-type weight)');
+  // a freshly-fetched reading (age≈0) outscores a stale one with the same type
+  // simulate by building two fake readings at different ages via trustScore directly
+  const fresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  const staleRd = dom.window.eval(`(function(){
+    const now=Date.now(), old=now - 3*600*1000 - 1000; // beyond 3× interval
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:old, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  ok(fresh > staleRd, 'fresh reading scores higher than a 3×-interval-old reading (freshness weight)');
+  // missing fields lower completeness
+  const complete = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'sensor', srcId:'weather'});
+  })()`);
+  const incomplete = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:null,unit:null,location:null,source:'s',
+      observedAt:now, fetchedAt:now, dataType:'sensor', srcId:'weather'});
+  })()`);
+  ok(complete > incomplete, 'reading with all 8 fields scores higher than one with 3 null fields (completeness weight)');
+  // Analytics table must show the Trust column
+  dom.window.document.querySelectorAll('.nav-item')[6].click(); // analytics nav
+  await new Promise(r=>setTimeout(r,100));
+  ok(dom.window.document.querySelector('#anaReadings th') &&
+     Array.from(dom.window.document.querySelectorAll('#anaReadings th')).some(th=>th.textContent==='Trust'),
+    'Analytics readings table has a Trust column');
+  dom.window.close();
+
   console.log(`\n${pass} checks passed`); process.exit(0);
 })().catch(e=>{ console.error('FAIL:',e.message); process.exit(1); });

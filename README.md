@@ -4,6 +4,25 @@
 
 Software Metrics project. The original nine-section prototype is preserved; every random-number generator was removed and the dashboard now runs on a shared live-data layer.
 
+## Trust Score (per reading)
+
+Every reading in the live-data store carries a `trustScore` (integer 0–100). It is computed from three components:
+
+| Component | Weight | How it is scored (0–100) |
+|---|---|---|
+| Freshness | 40% | `(1 − age / (3 × refresh_interval)) × 100`, clamped to 0 at 3× interval |
+| Source type | 40% | Sensor obs = 100, Provider-reported = 80, Authority-verified = 60, Model estimate = 40, Derived = 20, Projection = 0 |
+| Completeness | 20% | 8 required fields (metric, label, value, unit, location, source, observedAt, fetchedAt); 12.5 pts each |
+
+Formula: `trustScore = round( F×0.40 + S×0.40 + C×0.20 )`
+
+Worked examples:
+- Model estimate, age 200 s (interval 600 s), all fields: F=88.9, S=40, C=100 → **score 72**
+- Provider-reported, age 1500 s (2.5× interval), 1 field missing: F=16.7, S=80, C=87.5 → **score 57**
+- Derived, age 0 s (just fetched), all fields: F=100, S=20, C=100 → **score 68**
+
+Bands: ≥80 High (green), ≥55 Medium (cyan), ≥30 Low (amber), <30 Poor (red). Visible in the Analytics → Latest Valid Readings table. These weights are project-defined for the Software Metrics deliverable; they are not calibrated to an external standard.
+
 ## Architecture
 ```
 Browser (project_citypulse.html)                       Node backend (server.js, no deps)
