@@ -1,0 +1,2286 @@
+{
+  "generatedAt": "2026-10-26T11:10:46.876Z",
+  "sampleSize": 257,
+  "stats": {
+    "notices": {
+      "source": "notices",
+      "total": 122,
+      "okCount": 122,
+      "successRate": 100,
+      "p50": 12,
+      "p95": 94,
+      "first": "2026-10-25T07:04:16.225Z",
+      "last": "2026-10-26T11:10:28.452Z",
+      "topErrors": []
+    },
+    "airQuality": {
+      "source": "airQuality",
+      "total": 17,
+      "okCount": 17,
+      "successRate": 100,
+      "p50": 929,
+      "p95": 2268,
+      "first": "2026-10-25T07:04:17.086Z",
+      "last": "2026-10-26T11:02:07.308Z",
+      "topErrors": []
+    },
+    "weather": {
+      "source": "weather",
+      "total": 21,
+      "okCount": 21,
+      "successRate": 100,
+      "p50": 777,
+      "p95": 2257,
+      "first": "2026-10-25T07:04:17.092Z",
+      "last": "2026-10-26T11:07:08.685Z",
+      "topErrors": []
+    },
+    "traffic": {
+      "source": "traffic",
+      "total": 97,
+      "okCount": 97,
+      "successRate": 100,
+      "p50": 1002,
+      "p95": 2287,
+      "first": "2026-10-25T07:04:17.158Z",
+      "last": "2026-10-26T11:10:37.416Z",
+      "topErrors": []
+    }
+  },
+  "metricReadings": {
+    "auth_works": [
+      {
+        "at": "2026-10-26T10:22:59.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:23:19.238Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:24:19.251Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:25:19.469Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:26:20.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:27:21.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:28:22.458Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:29:23.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:30:24.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:31:25.450Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:32:26.450Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:33:27.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:34:28.443Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:35:29.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:36:30.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:37:31.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:38:32.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:39:33.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:40:34.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:41:35.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:42:36.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:43:37.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:44:38.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:45:39.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:46:40.457Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:47:04.100Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:47:05.445Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:48:06.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:49:07.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:50:08.478Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:51:09.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:52:10.467Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:53:11.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:54:12.446Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:55:13.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:56:14.458Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:57:15.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:58:16.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:59:17.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:00:18.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:01:19.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:02:20.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:03:21.468Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:04:22.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:05:23.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:06:24.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:07:25.457Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:08:26.451Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:09:27.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:10:28.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      }
+    ],
+    "auth_inc": [
+      {
+        "at": "2026-10-26T10:22:59.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:23:19.238Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:24:19.251Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:25:19.469Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:26:20.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:27:21.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:28:22.458Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:29:23.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:30:24.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:31:25.450Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:32:26.450Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:33:27.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:34:28.443Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:35:29.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:36:30.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:37:31.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:38:32.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:39:33.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:40:34.448Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:41:35.453Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:42:36.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:43:37.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:44:38.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:45:39.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:46:40.457Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:47:04.100Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:47:05.445Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:48:06.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:49:07.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:50:08.478Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:51:09.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:52:10.467Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:53:11.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:54:12.446Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:55:13.447Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:56:14.458Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:57:15.449Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:58:16.462Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T10:59:17.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:00:18.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:01:19.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:02:20.444Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:03:21.468Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:04:22.456Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:05:23.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:06:24.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:07:25.457Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:08:26.451Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:09:27.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      },
+      {
+        "at": "2026-10-26T11:10:28.452Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai (authority server)",
+        "dataType": "authority",
+        "source": "notices"
+      }
+    ],
+    "temp": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 29,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 29,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 28.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 28.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 28.7,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 28.7,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 28.7,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 28.5,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "hum": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 69,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 69,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 70,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 70,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 72,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 72,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 72,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 73,
+        "unit": "%",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "feels": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 31.9,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 31.9,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 31.9,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 31.9,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 31.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 31.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 31.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 31.8,
+        "unit": "°C",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "precip": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 0,
+        "unit": "mm",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "wind": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 16.4,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 16.4,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 16.3,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 16.3,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 16,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 16,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 16,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 15.7,
+        "unit": "km/h",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "wcode": [
+      {
+        "at": "2026-10-26T10:23:00.166Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:23:19.874Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:33:21.138Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:43:22.206Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:04.743Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:47:05.512Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T10:57:07.274Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      },
+      {
+        "at": "2026-10-26T11:07:08.685Z",
+        "value": 3,
+        "unit": "",
+        "location": "Chennai (13.11°, 80.25°) model grid",
+        "dataType": "model",
+        "source": "weather"
+      }
+    ],
+    "aqi": [
+      {
+        "at": "2026-10-26T10:23:00.235Z",
+        "value": 154,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:23:20.061Z",
+        "value": 154,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:38:21.284Z",
+        "value": 154,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:04.937Z",
+        "value": 154,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:05.554Z",
+        "value": 154,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T11:02:07.308Z",
+        "value": 158,
+        "unit": "AQI",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      }
+    ],
+    "pm25": [
+      {
+        "at": "2026-10-26T10:23:00.235Z",
+        "value": 62.2,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:23:20.061Z",
+        "value": 62.2,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:38:21.284Z",
+        "value": 62.2,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:04.937Z",
+        "value": 62.2,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:05.554Z",
+        "value": 62.2,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T11:02:07.308Z",
+        "value": 62.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      }
+    ],
+    "pm10": [
+      {
+        "at": "2026-10-26T10:23:00.235Z",
+        "value": 72.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:23:20.061Z",
+        "value": 72.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:38:21.284Z",
+        "value": 72.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:04.937Z",
+        "value": 72.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:05.554Z",
+        "value": 72.9,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T11:02:07.308Z",
+        "value": 73.1,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      }
+    ],
+    "o3": [
+      {
+        "at": "2026-10-26T10:23:00.235Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:23:20.061Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:38:21.284Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:04.937Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:05.554Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T11:02:07.308Z",
+        "value": 175,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      }
+    ],
+    "no2": [
+      {
+        "at": "2026-10-26T10:23:00.235Z",
+        "value": 3.7,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:23:20.061Z",
+        "value": 3.7,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:38:21.284Z",
+        "value": 3.7,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:04.937Z",
+        "value": 3.7,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T10:47:05.554Z",
+        "value": 3.7,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      },
+      {
+        "at": "2026-10-26T11:02:07.308Z",
+        "value": 5.8,
+        "unit": "μg/m³",
+        "location": "Chennai (13.10°, 80.30°) CAMS grid",
+        "dataType": "model",
+        "source": "airQuality"
+      }
+    ],
+    "cong": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 17.78246054519369,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 17.78246054519369,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 18.507890961262554,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 17.61764705882353,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 19.119685013695054,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 19.67491553162285,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 24.81117055219198,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 24.81117055219198,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 21.545041519933914,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 20.469001347767488,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 19.955882352941178,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 19.830882352941178,
+        "unit": "%",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      }
+    ],
+    "speed": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 28,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 28,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 27.8,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 28,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 27.8,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 27.8,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 25.8,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 25.8,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 27,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 27.4,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 27.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 27.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      }
+    ],
+    "freeflow": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 34.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 34.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 34.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 34,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 34.4,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 34.6,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 34.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 34.2,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 34.4,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 34.4,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 34,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 34,
+        "unit": "km/h",
+        "location": "Chennai sampled road segments",
+        "dataType": "derived",
+        "source": "traffic"
+      }
+    ],
+    "inc_total": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 223,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 223,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 224,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 222,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 233,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 264,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 259,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 259,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 252,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 233,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 237,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 245,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      }
+    ],
+    "inc_works": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      }
+    ],
+    "inc_closure": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      }
+    ],
+    "inc_flood": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      }
+    ],
+    "inc_acc": [
+      {
+        "at": "2026-10-26T10:23:00.495Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:23:19.211Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:28:19.472Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:33:20.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:38:22.599Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:43:23.455Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.153Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:47:05.436Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:52:05.461Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T10:57:06.465Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:02:07.454Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      },
+      {
+        "at": "2026-10-26T11:07:08.460Z",
+        "value": 0,
+        "unit": "",
+        "location": "Chennai bbox 80.15070,12.96270,80.39070,13.20270",
+        "dataType": "provider",
+        "source": "traffic"
+      }
+    ]
+  }
+}
