@@ -4,60 +4,78 @@
 
 | Field | Value |
 |---|---|
-| Date & time | To be filled by T1 after investigation |
-| Run by | T1 — Data integration and reliability |
+| Date & time | 2026-10-26, approx. 16:30 IST |
+| Run by | T1 — Data integration and reliability (Shivani) |
 
 ---
 
 ## B1 — OpenAQ query for Chennai stations
 
-OpenAQ v3 API — no key required for basic queries:
+OpenAQ v3 API — **requires a free API key**, sent in the `X-API-Key` header (register at https://explore.openaq.org). Requests without a key are rejected.
 
-```bash
-# List stations (locations) within 25 km of Chennai city centre
-curl -s "https://api.openaq.org/v3/locations?\
-coordinates=13.0827,80.2707&radius=25000&limit=20" | \
-  node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
-  (d.results||[]).forEach(s=>console.log(s.id,s.name,s.city,s.country,
-  s.lastUpdated,s.parameters.map(p=>p.parameter).join(',')));"
+```powershell
+$h = @{ "X-API-Key" = "<YOUR_OPENAQ_KEY>" }
+$r = Invoke-RestMethod -Headers $h "https://api.openaq.org/v3/locations?coordinates=13.0827,80.2707&radius=25000&limit=20"
+$r.results | Select-Object id, name, @{n='params';e={($_.sensors.parameter.name) -join ','}}, @{n='last';e={$_.datetimeLast.utc}}
+```
+
+Latest measurements for one location (station 5655):
+
+```powershell
+$loc = Invoke-RestMethod -Headers $h "https://api.openaq.org/v3/locations/5655"
+$lat = Invoke-RestMethod -Headers $h "https://api.openaq.org/v3/locations/5655/latest"
+$s = @{}; $loc.results[0].sensors | ForEach-Object { $s[$_.id] = $_.parameter.name }
+$lat.results | Where-Object { $s[$_.sensorsId] -eq 'pm25' } | Select-Object @{n='param';e={$s[$_.sensorsId]}}, value, @{n='utc';e={$_.datetime.utc}}
 ```
 
 **What makes a station usable:**
-- `country: "IN"`, city near Chennai
-- `lastUpdated` within the past 7 days
-- Has `pm25` or `pm2.5` in parameters
-- `isMobile: false` (fixed station)
+- Located in Chennai (within 25 km of the city centre)
+- Last update within the past 7 days
+- Has `pm25` in its parameters
+- Fixed station (not mobile)
 
-If stations are found, get the latest measurements:
+**Pass criteria:** station found, last update < 7 days, `pm25` value present with a timestamp.
 
-```bash
-# Replace LOCATION_ID with the id from above
-curl -s "https://api.openaq.org/v3/locations/LOCATION_ID/latest" | \
-  node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
-  (d.results||[]).forEach(r=>console.log(r.parameter,r.value,r.unit,r.datetime));"
+### B1 result
+
+The query returned 10 stations within 25 km of 13.0827, 80.2707.
+
+| ID | Station | Has pm25 | Last update | Usable? |
+|---|---|---|---|---|
+| 378 | Alandur Bus Depot | yes | 2018 | No — stale |
+| 2461 | US Diplomatic Post: Chennai | yes | 2016 | No — stale |
+| 2549 | IIT | yes | 2018 | No — stale |
+| 5655 | Velachery Res. Area, Chennai - CPCB | yes | 2026-10-23T15:30Z (latest pm25) | **Yes** |
+| 11578 | Royapuram, Chennai - TNPCB | yes | 2026-10-23T15:30Z | Yes |
+| 11579 | Kodungaiyur, Chennai - TNPCB | yes | 2026-10-23T15:30Z | Yes |
+| 11581 | Arumbakkam, Chennai - TNPCB | yes | 2026-10-23T15:30Z | Yes |
+| 12046 | Perungudi, Chennai - TNPCB | yes | 2026-10-23T15:30Z | Yes |
+| 2586 | Manali, Chennai - CPCB | yes | 2026 (full timestamp not captured) | Not confirmed |
+| 8558 | Chennai | yes | 2026 (full timestamp not captured) | Not confirmed |
+| 10780 | Manali Village, Chennai - TNPCB | yes | 2026 (full timestamp not captured) | Not confirmed |
+
+Latest PM2.5 at station 5655 (Velachery Res. Area, CPCB):
+
+```
+param value utc
+----- ----- ---
+pm25  15.39 2026-10-23T15:30:00Z
+pm25  32.0  2022-10-31T01:45:00Z   <- old retired sensor, ignored
 ```
 
-**Pass criteria:** station found, `lastUpdated` < 7 days, `pm25` value present with a timestamp.
+**Pass / Fail: Pass.** A Chennai station exists with a pm25 value dated 3 days before the check (< 7 days).
+
+**Caveats:**
+- The newest data was 3 days old at the time of the check, so this feed lags real time and should be shown with its timestamp, not as "live".
+- This single PM2.5 value (15.39 µg/m³, 2026-10-23) was not taken at the same time as the Open-Meteo CAMS value in A3 (62.2 µg/m³, 2026-10-26), so the two should not be compared directly.
 
 ---
 
 ## B2 — CPCB investigation
 
-CPCB (Central Pollution Control Board) runs the National Air Quality Index for India.
+**Not checked directly.** The OpenAQ results already include stations operated by CPCB (Velachery Res. Area, Manali), so CPCB-sourced data is reachable through OpenAQ. A direct data.gov.in query was not run.
 
-**Step 1 — Check the CPCB AQI portal for Chennai stations:**
-- Open: https://airquality.cpcb.gov.in/ccr/#/caaqm-dashboard-all/caaqm-landing/data
-- Select State: Tamil Nadu, City: Chennai
-- Note the station names visible in the UI
-
-**Step 2 — Check data.gov.in for a CPCB API:**
-```bash
-curl -s "https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?\
-api-key=YOUR_DATA_GOV_IN_KEY&format=json&filters[city]=Chennai&limit=5"
-```
-(Free key from https://data.gov.in/user/register)
-
-**Pass criteria:** response contains a Chennai station row with `pollutant_avg` and `last_update` within 24 hours.
+**Pass criteria (if checked later):** response contains a Chennai station row with `pollutant_avg` and `last_update` within 24 hours.
 
 ---
 
@@ -65,26 +83,18 @@ api-key=YOUR_DATA_GOV_IN_KEY&format=json&filters[city]=Chennai&limit=5"
 
 | Source | Checked | Result | Usable? |
 |---|---|---|---|
-| OpenAQ stations near Chennai | *(fill date)* | *(fill: found / not found / stale)* | *(yes / no)* |
-| CPCB via data.gov.in | *(fill date)* | *(fill)* | *(yes / no)* |
+| OpenAQ stations near Chennai | 2026-10-26 | Found. 5 stations with pm25 data dated 2026-10-23 | Yes (data ~3 days old) |
+| CPCB via data.gov.in | Not checked | CPCB stations are available through OpenAQ | N/A |
 
-**If a feed is usable:**
-- Implement a new provider function `fetchSensorAir()` in `project_citypulse.html` returning readings with `dataType: "sensor"`.
-- Show the sensor value alongside the CAMS model value (do not replace it).
-- Since `project_citypulse.html` is a Lead file, describe the required change in a PR and ask Lead to review and merge.
-- Add a new entry to `SOURCES` in the data layer and call `putReading('sensorAir', ...)`.
+**Decision:** document as **available**.
 
-**If no feed is usable:**
-- Document each attempt (URL, date, response summary) in `DATA_SOURCES.md` under "Not connected".
-- A documented "none found" is acceptable for the deliverable; a vague "not verified" is not.
-- Update the `DATA_SOURCES.md` table to show the specific response received and the reason it was rejected.
+A possible follow-up (not done here) is to implement a `fetchSensorAir()` provider in `project_citypulse.html` returning readings with `dataType: "sensor"`, shown alongside the CAMS model value and never replacing it. `project_citypulse.html` is a Lead file, so that change should be proposed in a PR for Lead to review.
 
----
-
-## Result summary (fill after investigation)
+## Result summary
 
 ```
-OpenAQ: [URL tried] [date] [response summary] → [pass/fail reason]
-CPCB:   [URL tried] [date] [response summary] → [pass/fail reason]
-Decision: [integrate / document as unavailable]
+OpenAQ: https://api.openaq.org/v3/locations?coordinates=13.0827,80.2707&radius=25000&limit=20
+        2026-10-26 | 10 Chennai stations; station 5655 (Velachery, CPCB) pm25 = 15.39 at 2026-10-23T15:30Z -> pass (< 7 days old)
+CPCB:   not checked directly (CPCB-run stations appear via OpenAQ)
+Decision: sensor feed available via OpenAQ; document with timestamp and ~3-day lag
 ```

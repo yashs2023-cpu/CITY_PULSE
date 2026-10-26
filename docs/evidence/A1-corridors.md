@@ -4,8 +4,8 @@
 
 | Field | Value |
 |---|---|
-| Date & time | To be filled by T1 after live run |
-| Run by | T1 — Data integration and reliability |
+| Date & time | 2026-10-26, approx. 15:55 IST |
+| Run by | T1 — Data integration and reliability (Shivani) |
 | URL | `http://localhost:3000/api/traffic` |
 | Prerequisite | `TOMTOM_API_KEY` set in `.env`; `node server.js` running |
 
@@ -49,9 +49,30 @@ $d.corridors | ForEach-Object { "$($_.name)  ok=$($_.ok)  matched=$($_.matched.l
 
 | Field | Value |
 |---|---|
-| Actual output | *(paste curl/PowerShell output here)* |
-| Pass / Fail | *(fill after run)* |
-| Notes / fixes | *(if any matched position looks wrong, note it here and update config.json)* |
+| Actual output | See output block below |
+| Pass / Fail | **Pass** — 5/5 corridors `ok=True`; `Incidents ok: True` (224 items, no error) |
+| Notes / fixes | All matched positions are within 0.005° of the intended coordinates (largest offset: ECR, about 0.004° in longitude). No `config.json` changes needed. At the time of the run TomTom reported the Anna Salai segment as "closed" (shown as "Moderate · closed" on the dashboard). |
+
+Actual output (PowerShell, 2026-10-26):
+
+```
+MG Road  ok=True  matched=13.059198294781288,80.23996172012761
+Anna Salai  ok=True  matched=13.044561469971251,80.24807942571306
+OMR  ok=True  matched=12.901009680230018,80.2279011672893
+ECR  ok=True  matched=12.950076626063924,80.25496331515137
+GST Road  ok=True  matched=13.006739655377666,80.2207048005007
+ok=True  count=224  error=
+```
+
+Offset from intended position (degrees):
+
+| Corridor | Δ lat | Δ lon |
+|---|---|---|
+| MG Road | 0.002 | 0.002 |
+| Anna Salai | 0.001 | 0.002 |
+| OMR | 0.000 | 0.000 |
+| ECR | 0.001 | 0.004 |
+| GST Road | 0.000 | 0.001 |
 
 ## Zone-to-corridor links (A1 sub-check)
 

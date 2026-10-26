@@ -4,8 +4,8 @@
 
 | Field | Value |
 |---|---|
-| Date & time | To be filled by T1 after live run |
-| Run by | T1 — Data integration and reliability |
+| Date & time | 2026-10-26, approx. 15:55 IST |
+| Run by | T1 — Data integration and reliability (Shivani) |
 | URL | `http://localhost:3000/api/traffic` (same response as A1) |
 
 ## What to check
@@ -55,8 +55,17 @@ Fields added in recent TomTom API versions that may not exist on free tier: `las
 
 | Field | Value |
 |---|---|
-| `incidents.ok` | *(fill after run)* |
-| `incidents.items.length` | *(fill after run)* |
-| Error (if any) | *(fill after run)* |
-| Pass / Fail | *(fill after run)* |
-| Fix applied | *(if INC_FIELDS changed, note the exact change and commit ref)* |
+| `incidents.ok` | `true` |
+| `incidents.items.length` | 224 |
+| Error (if any) | None (error field empty; no HTTP 400, no 429) |
+| Pass / Fail | **Pass** |
+| Fix applied | None needed. TomTom accepted the full `INC_FIELDS` string including `lastReportTime`, so `server.js` is unchanged and nothing needs to go to Lead or Vaishnavi. |
+
+Actual output (PowerShell, 2026-10-26):
+
+```
+$d = Invoke-RestMethod http://localhost:3000/api/traffic
+"ok=$($d.incidents.ok)  count=$($d.incidents.items.Count)  error=$($d.incidents.error)"
+
+ok=True  count=224  error=
+```
