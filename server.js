@@ -4,7 +4,6 @@ try { for (const l of fs.readFileSync(path.join(__dirname, '.env'), 'utf8').spli
   const m = l.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/); if (m && !l.trim().startsWith('#') && !(m[1] in process.env)) process.env[m[1]] = m[2]; } } catch {}
 const PORT = +process.env.PORT || 3000, KEY = process.env.TOMTOM_API_KEY || '';
 const TTL = (+process.env.TRAFFIC_CACHE_SECONDS || 120) * 1000;
-const POLL_MS = (+process.env.TRAFFIC_POLL_SECONDS || 120) * 1000;
 const LOG = path.join(__dirname, 'logs', 'fetch-log.jsonl');
 const logLine = (o) => { try { fs.mkdirSync(path.dirname(LOG), { recursive: true }); fs.appendFileSync(LOG, JSON.stringify({ at: new Date().toISOString(), ...o }) + '\n'); } catch {} };
 const cfg = () => JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
@@ -78,13 +77,13 @@ function dashboardLogLine(b) {
   const readings = Array.isArray(b.readings) ? b.readings : (b.reading ? [b.reading] : []);
   if (readings.length) {
     line.readings = readings.map(r => ({
-      metric:     typeof r.metric   === 'string'  ? r.metric.slice(0, 80)   : null,
-      value:      Number.isFinite(r.value)        ? r.value                 : null,
-      unit:       typeof r.unit     === 'string'  ? r.unit.slice(0, 40)     : null,
-      location:   typeof r.location === 'string'  ? r.location.slice(0, 80) : null,
-      observedAt: Number.isFinite(r.observedAt)   ? r.observedAt            : null,
-      dataType:   typeof r.dataType === 'string'  ? r.dataType.slice(0, 40) : null,
-      status:     typeof r.status   === 'string'  ? r.status.slice(0, 40)   : null
+      metric: typeof r.metric === 'string' ? r.metric.slice(0, 80) : null,
+      value: Number.isFinite(r.value) ? r.value : null,
+      unit: typeof r.unit === 'string' ? r.unit.slice(0, 40) : null,
+      location: typeof r.location === 'string' ? r.location.slice(0, 80) : null,
+      observedAt: Number.isFinite(r.observedAt) ? r.observedAt : null,
+      dataType: typeof r.dataType === 'string' ? r.dataType.slice(0, 40) : null,
+      status: typeof r.status === 'string' ? r.status.slice(0, 40) : null
     }));
   }
   return line;
@@ -119,13 +118,16 @@ const server = http.createServer(async (req, res) => {
 // and logs a line with source:"traffic", origin:"server-poller".
 // Weather and air-quality are browser-direct (no key) – they are not polled
 // here to avoid redundant model-estimate calls; only traffic needs a server key.
+const POLL_MS = TTL; // match the cache TTL so each poll gets a fresh response
 let pollerTimer = null;
 function startPoller() {
   if (!KEY) { logLine({ source: 'server-poller', origin: 'server', ok: false, error: 'TOMTOM_API_KEY not set – poller idle' }); return; }
   const run = async () => {
     try {
+      // Force cache bypass by clearing it before the poll call
+      cache = null;
       const data = await traffic();
-      logLine({ source: 'traffic', origin: 'server-poller', ok: pollOk(data),
+      logLine({ source: 'traffic', origin: 'server-poller', ok: true,
         corridorsOk: data.corridors.filter(c => c.ok).length,
         corridorsTotal: data.corridors.length,
         incidentsOk: data.incidents.ok,
