@@ -1,7 +1,50 @@
 {
-  "generatedAt": "2026-10-26T04:14:52.893Z",
-  "logFiles": [],
-  "providerQuality": {},
+  "generatedAt": "2026-10-26T09:36:23.326Z",
+  "logFiles": [
+    "fetch-log.jsonl"
+  ],
+  "providerQuality": {
+    "server-poller": {
+      "fetches": 2,
+      "successes": 0,
+      "failures": 2,
+      "successRate": 0,
+      "p50Ms": null,
+      "p95Ms": null
+    },
+    "notices": {
+      "fetches": 3,
+      "successes": 0,
+      "failures": 3,
+      "successRate": 0,
+      "p50Ms": null,
+      "p95Ms": null
+    },
+    "traffic": {
+      "fetches": 2,
+      "successes": 0,
+      "failures": 2,
+      "successRate": 0,
+      "p50Ms": null,
+      "p95Ms": null
+    },
+    "weather": {
+      "fetches": 2,
+      "successes": 2,
+      "failures": 0,
+      "successRate": 100,
+      "p50Ms": null,
+      "p95Ms": null
+    },
+    "airQuality": {
+      "fetches": 2,
+      "successes": 2,
+      "failures": 0,
+      "successRate": 100,
+      "p50Ms": null,
+      "p95Ms": null
+    }
+  },
   "readingStates": {
     "counts": {
       "live": 0,
