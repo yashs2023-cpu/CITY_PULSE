@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T04:13:09.886Z",
+  "generatedAt": "2026-10-26T09:36:23.227Z",
   "scope": "Repository source files excluding .git, node_modules, docs, legacy and coverage",
   "files": [
     {
@@ -334,9 +334,9 @@
     },
     {
       "file": "project_citypulse.html",
-      "loc": 1061,
+      "loc": 1074,
       "commentLines": 74,
-      "commentRatio": 0.0697,
+      "commentRatio": 0.0689,
       "functions": [
         {
           "name": "media",
@@ -356,57 +356,57 @@
         {
           "name": "clamp",
           "startLine": 586,
-          "approximateCyclomatic": 38
+          "approximateCyclomatic": 36
         },
         {
           "name": "num",
           "startLine": 588,
-          "approximateCyclomatic": 38
+          "approximateCyclomatic": 36
         },
         {
           "name": "fmt",
           "startLine": 589,
-          "approximateCyclomatic": 35
+          "approximateCyclomatic": 33
         },
         {
           "name": "fmtTime",
           "startLine": 590,
-          "approximateCyclomatic": 38
-        },
-        {
-          "name": "if",
-          "startLine": 593,
-          "approximateCyclomatic": 40
-        },
-        {
-          "name": "fmtAge",
-          "startLine": 596,
-          "approximateCyclomatic": 39
-        },
-        {
-          "name": "getJson",
-          "startLine": 600,
           "approximateCyclomatic": 36
         },
         {
           "name": "if",
+          "startLine": 593,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "fmtAge",
+          "startLine": 596,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "getJson",
+          "startLine": 600,
+          "approximateCyclomatic": 34
+        },
+        {
+          "name": "if",
           "startLine": 605,
-          "approximateCyclomatic": 35
+          "approximateCyclomatic": 33
         },
         {
           "name": "catch",
           "startLine": 608,
-          "approximateCyclomatic": 30
+          "approximateCyclomatic": 28
         },
         {
           "name": "apiBase",
           "startLine": 611,
-          "approximateCyclomatic": 31
+          "approximateCyclomatic": 29
         },
         {
           "name": "trustScore",
           "startLine": 649,
-          "approximateCyclomatic": 47
+          "approximateCyclomatic": 45
         },
         {
           "name": "trustBand",
@@ -481,17 +481,17 @@
         {
           "name": "if",
           "startLine": 772,
-          "approximateCyclomatic": 49
+          "approximateCyclomatic": 48
         },
         {
           "name": "if",
           "startLine": 780,
-          "approximateCyclomatic": 50
+          "approximateCyclomatic": 53
         },
         {
           "name": "cnt",
           "startLine": 782,
-          "approximateCyclomatic": 50
+          "approximateCyclomatic": 51
         },
         {
           "name": "fetchNotices",
@@ -511,27 +511,27 @@
         {
           "name": "km",
           "startLine": 806,
-          "approximateCyclomatic": 55
+          "approximateCyclomatic": 54
         },
         {
           "name": "nearCorridor",
           "startLine": 807,
-          "approximateCyclomatic": 56
+          "approximateCyclomatic": 57
         },
         {
           "name": "classifyCorridor",
           "startLine": 813,
-          "approximateCyclomatic": 55
+          "approximateCyclomatic": 53
         },
         {
           "name": "schedule",
           "startLine": 827,
-          "approximateCyclomatic": 57
+          "approximateCyclomatic": 50
         },
         {
           "name": "run",
           "startLine": 828,
-          "approximateCyclomatic": 57
+          "approximateCyclomatic": 50
         },
         {
           "name": "if",
@@ -541,306 +541,475 @@
         {
           "name": "catch",
           "startLine": 837,
-          "approximateCyclomatic": 54
+          "approximateCyclomatic": 57
         },
         {
           "name": "if",
           "startLine": 839,
-          "approximateCyclomatic": 52
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "sourceReadings",
+          "startLine": 845,
+          "approximateCyclomatic": 50
         },
         {
           "name": "logFetch",
-          "startLine": 845,
-          "approximateCyclomatic": 48
+          "startLine": 851,
+          "approximateCyclomatic": 51
         },
         {
           "name": "startAll",
-          "startLine": 846,
+          "startLine": 859,
           "approximateCyclomatic": 46
         },
         {
           "name": "refreshAll",
-          "startLine": 847,
+          "startLine": 860,
           "approximateCyclomatic": 47
         },
         {
           "name": "resetStore",
-          "startLine": 848,
+          "startLine": 861,
           "approximateCyclomatic": 47
         },
         {
           "name": "badgeClass",
-          "startLine": 852,
+          "startLine": 865,
           "approximateCyclomatic": 52
         },
         {
           "name": "lineSVG",
-          "startLine": 858,
-          "approximateCyclomatic": 50
-        },
-        {
-          "name": "naBox",
-          "startLine": 865,
-          "approximateCyclomatic": 48
-        },
-        {
-          "name": "tsChart",
-          "startLine": 866,
-          "approximateCyclomatic": 48
-        },
-        {
-          "name": "hbars",
           "startLine": 871,
           "approximateCyclomatic": 50
         },
         {
-          "name": "metaHTML",
-          "startLine": 875,
-          "approximateCyclomatic": 48
-        },
-        {
-          "name": "if",
+          "name": "naBox",
           "startLine": 878,
           "approximateCyclomatic": 48
         },
         {
-          "name": "rcard",
-          "startLine": 881,
+          "name": "tsChart",
+          "startLine": 879,
           "approximateCyclomatic": 48
         },
         {
-          "name": "if",
-          "startLine": 883,
-          "approximateCyclomatic": 49
+          "name": "hbars",
+          "startLine": 884,
+          "approximateCyclomatic": 50
         },
         {
-          "name": "ncard",
+          "name": "metaHTML",
           "startLine": 888,
-          "approximateCyclomatic": 51
-        },
-        {
-          "name": "renderTable",
-          "startLine": 889,
-          "approximateCyclomatic": 52
+          "approximateCyclomatic": 48
         },
         {
           "name": "if",
           "startLine": 891,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "rcard",
+          "startLine": 894,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "if",
+          "startLine": 896,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "ncard",
+          "startLine": 901,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "renderTable",
+          "startLine": 902,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "if",
+          "startLine": 904,
           "approximateCyclomatic": 53
         },
         {
           "name": "renderEnv",
-          "startLine": 900,
+          "startLine": 913,
           "approximateCyclomatic": 43
         },
         {
           "name": "renderMob",
-          "startLine": 918,
+          "startLine": 931,
           "approximateCyclomatic": 52
         },
         {
           "name": "noticeRows",
-          "startLine": 949,
+          "startLine": 962,
           "approximateCyclomatic": 51
         },
         {
           "name": "renderNotices",
-          "startLine": 952,
+          "startLine": 965,
           "approximateCyclomatic": 49
         },
         {
           "name": "renderInfra",
-          "startLine": 960,
+          "startLine": 973,
           "approximateCyclomatic": 45
         },
         {
           "name": "R",
-          "startLine": 963,
+          "startLine": 976,
           "approximateCyclomatic": 48
         },
         {
           "name": "renderHuman",
-          "startLine": 982,
-          "approximateCyclomatic": 45
+          "startLine": 995,
+          "approximateCyclomatic": 41
         },
         {
           "name": "computeAlerts",
-          "startLine": 996,
-          "approximateCyclomatic": 46
+          "startLine": 1009,
+          "approximateCyclomatic": 42
         },
         {
           "name": "renderDash",
-          "startLine": 1005,
-          "approximateCyclomatic": 44
+          "startLine": 1018,
+          "approximateCyclomatic": 40
         },
         {
           "name": "renderStatus",
-          "startLine": 1017,
-          "approximateCyclomatic": 51
+          "startLine": 1030,
+          "approximateCyclomatic": 47
         },
         {
           "name": "derivedList",
-          "startLine": 1022,
-          "approximateCyclomatic": 44
+          "startLine": 1035,
+          "approximateCyclomatic": 40
         },
         {
           "name": "renderAnalytics",
-          "startLine": 1030,
-          "approximateCyclomatic": 45
+          "startLine": 1043,
+          "approximateCyclomatic": 41
         },
         {
           "name": "if",
-          "startLine": 1033,
+          "startLine": 1046,
           "approximateCyclomatic": 39
         },
         {
           "name": "simBaseline",
-          "startLine": 1047,
+          "startLine": 1060,
           "approximateCyclomatic": 45
         },
         {
           "name": "if",
-          "startLine": 1051,
+          "startLine": 1064,
           "approximateCyclomatic": 43
         },
         {
           "name": "if",
-          "startLine": 1052,
+          "startLine": 1065,
           "approximateCyclomatic": 42
         },
         {
           "name": "runSimulation",
-          "startLine": 1056,
+          "startLine": 1069,
           "approximateCyclomatic": 40
         },
         {
           "name": "if",
-          "startLine": 1061,
+          "startLine": 1074,
           "approximateCyclomatic": 36
         },
         {
           "name": "d",
-          "startLine": 1064,
+          "startLine": 1077,
           "approximateCyclomatic": 33
         },
         {
           "name": "if",
-          "startLine": 1071,
+          "startLine": 1084,
           "approximateCyclomatic": 42
         },
         {
           "name": "simCard",
-          "startLine": 1081,
+          "startLine": 1094,
           "approximateCyclomatic": 38
         },
         {
           "name": "simNA",
-          "startLine": 1082,
+          "startLine": 1095,
           "approximateCyclomatic": 38
         },
         {
           "name": "buildReport",
-          "startLine": 1086,
+          "startLine": 1099,
           "approximateCyclomatic": 38
         },
         {
           "name": "if",
-          "startLine": 1096,
+          "startLine": 1109,
           "approximateCyclomatic": 32
         },
         {
           "name": "if",
-          "startLine": 1098,
+          "startLine": 1111,
           "approximateCyclomatic": 30
         },
         {
           "name": "download",
-          "startLine": 1105,
+          "startLine": 1118,
           "approximateCyclomatic": 35
         },
         {
           "name": "overall",
-          "startLine": 1108,
+          "startLine": 1121,
           "approximateCyclomatic": 37
         },
         {
           "name": "renderChip",
-          "startLine": 1113,
+          "startLine": 1126,
           "approximateCyclomatic": 38
         },
         {
           "name": "drawPulse",
-          "startLine": 1119,
+          "startLine": 1132,
           "approximateCyclomatic": 39
         },
         {
           "name": "if",
-          "startLine": 1121,
+          "startLine": 1134,
           "approximateCyclomatic": 39
         },
         {
           "name": "onUpdate",
-          "startLine": 1127,
+          "startLine": 1140,
           "approximateCyclomatic": 36
         },
         {
           "name": "if",
-          "startLine": 1128,
+          "startLine": 1141,
           "approximateCyclomatic": 36
         },
         {
           "name": "if",
-          "startLine": 1129,
+          "startLine": 1142,
           "approximateCyclomatic": 35
         },
         {
           "name": "if",
-          "startLine": 1130,
+          "startLine": 1143,
           "approximateCyclomatic": 34
         },
         {
           "name": "if",
-          "startLine": 1131,
+          "startLine": 1144,
           "approximateCyclomatic": 33
         },
         {
           "name": "renderAll",
-          "startLine": 1134,
+          "startLine": 1147,
           "approximateCyclomatic": 32
         },
         {
           "name": "fillSettings",
-          "startLine": 1149,
+          "startLine": 1162,
           "approximateCyclomatic": 31
         },
         {
           "name": "loadHealth",
-          "startLine": 1165,
+          "startLine": 1178,
           "approximateCyclomatic": 19
         },
         {
           "name": "boot",
-          "startLine": 1172,
+          "startLine": 1185,
           "approximateCyclomatic": 16
         },
         {
           "name": "if",
-          "startLine": 1174,
+          "startLine": 1187,
           "approximateCyclomatic": 11
         },
         {
           "name": "if",
-          "startLine": 1175,
+          "startLine": 1188,
           "approximateCyclomatic": 6
         }
       ]
     },
     {
+      "file": "scripts/analyze-citypulse.js",
+      "loc": 139,
+      "commentLines": 2,
+      "commentRatio": 0.0144,
+      "functions": [
+        {
+          "name": "parseTime",
+          "startLine": 8,
+          "approximateCyclomatic": 53
+        },
+        {
+          "name": "readLog",
+          "startLine": 20,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "catch",
+          "startLine": 28,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "extractObservations",
+          "startLine": 35,
+          "approximateCyclomatic": 42
+        },
+        {
+          "name": "for",
+          "startLine": 37,
+          "approximateCyclomatic": 42
+        },
+        {
+          "name": "for",
+          "startLine": 39,
+          "approximateCyclomatic": 39
+        },
+        {
+          "name": "metricMatches",
+          "startLine": 52,
+          "approximateCyclomatic": 21
+        },
+        {
+          "name": "intervalChanges",
+          "startLine": 58,
+          "approximateCyclomatic": 19
+        },
+        {
+          "name": "for",
+          "startLine": 62,
+          "approximateCyclomatic": 19
+        },
+        {
+          "name": "if",
+          "startLine": 65,
+          "approximateCyclomatic": 16
+        },
+        {
+          "name": "pearson",
+          "startLine": 77,
+          "approximateCyclomatic": 15
+        },
+        {
+          "name": "rainCongestionCorrelation",
+          "startLine": 87,
+          "approximateCyclomatic": 13
+        },
+        {
+          "name": "for",
+          "startLine": 92,
+          "approximateCyclomatic": 13
+        },
+        {
+          "name": "if",
+          "startLine": 95,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "analyze",
+          "startLine": 104,
+          "approximateCyclomatic": 10
+        },
+        {
+          "name": "if",
+          "startLine": 122,
+          "approximateCyclomatic": 10
+        }
+      ]
+    },
+    {
       "file": "scripts/evaluate-simulator.js",
-      "loc": 1,
-      "commentLines": 5,
-      "commentRatio": 5,
-      "functions": []
+      "loc": 129,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": [
+        {
+          "name": "readRows",
+          "startLine": 7,
+          "approximateCyclomatic": 44
+        },
+        {
+          "name": "catch",
+          "startLine": 16,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "validReading",
+          "startLine": 23,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "extractPairs",
+          "startLine": 35,
+          "approximateCyclomatic": 23
+        },
+        {
+          "name": "for",
+          "startLine": 40,
+          "approximateCyclomatic": 23
+        },
+        {
+          "name": "for",
+          "startLine": 42,
+          "approximateCyclomatic": 20
+        },
+        {
+          "name": "for",
+          "startLine": 62,
+          "approximateCyclomatic": 14
+        },
+        {
+          "name": "if",
+          "startLine": 66,
+          "approximateCyclomatic": 12
+        },
+        {
+          "name": "summarize",
+          "startLine": 85,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "for",
+          "startLine": 87,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "evaluateFile",
+          "startLine": 99,
+          "approximateCyclomatic": 9
+        },
+        {
+          "name": "if",
+          "startLine": 105,
+          "approximateCyclomatic": 9
+        },
+        {
+          "name": "if",
+          "startLine": 118,
+          "approximateCyclomatic": 4
+        },
+        {
+          "name": "if",
+          "startLine": 125,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "for",
+          "startLine": 132,
+          "approximateCyclomatic": 2
+        }
+      ]
     },
     {
       "file": "scripts/log-analysis.js",
@@ -987,119 +1156,157 @@
       ]
     },
     {
+      "file": "scripts/t2-system-quality.js",
+      "loc": 74,
+      "commentLines": 1,
+      "commentRatio": 0.0135,
+      "functions": [
+        {
+          "name": "readJsonLines",
+          "startLine": 9,
+          "approximateCyclomatic": 33
+        },
+        {
+          "name": "pick",
+          "startLine": 16,
+          "approximateCyclomatic": 30
+        },
+        {
+          "name": "percentile",
+          "startLine": 21,
+          "approximateCyclomatic": 26
+        },
+        {
+          "name": "for",
+          "startLine": 34,
+          "approximateCyclomatic": 23
+        }
+      ]
+    },
+    {
       "file": "server.js",
-      "loc": 128,
-      "commentLines": 12,
-      "commentRatio": 0.0938,
+      "loc": 136,
+      "commentLines": 8,
+      "commentRatio": 0.0588,
       "functions": [
         {
           "name": "logLine",
-          "startLine": 8,
-          "approximateCyclomatic": 63
-        },
-        {
-          "name": "cfg",
           "startLine": 9,
-          "approximateCyclomatic": 64
-        },
-        {
-          "name": "getJson",
-          "startLine": 15,
           "approximateCyclomatic": 69
         },
         {
+          "name": "cfg",
+          "startLine": 10,
+          "approximateCyclomatic": 69
+        },
+        {
+          "name": "getJson",
+          "startLine": 16,
+          "approximateCyclomatic": 74
+        },
+        {
           "name": "parseFlow",
-          "startLine": 21,
-          "approximateCyclomatic": 71
+          "startLine": 22,
+          "approximateCyclomatic": 77
         },
         {
           "name": "n",
-          "startLine": 23,
-          "approximateCyclomatic": 70
+          "startLine": 24,
+          "approximateCyclomatic": 76
         },
         {
           "name": "distance",
-          "startLine": 27,
-          "approximateCyclomatic": 68
+          "startLine": 28,
+          "approximateCyclomatic": 74
         },
         {
           "name": "parseIncidents",
-          "startLine": 36,
-          "approximateCyclomatic": 67
+          "startLine": 37,
+          "approximateCyclomatic": 73
+        },
+        {
+          "name": "pollOk",
+          "startLine": 46,
+          "approximateCyclomatic": 50
         },
         {
           "name": "traffic",
-          "startLine": 46,
-          "approximateCyclomatic": 43
+          "startLine": 52,
+          "approximateCyclomatic": 44
         },
         {
           "name": "send",
-          "startLine": 61,
+          "startLine": 68,
           "approximateCyclomatic": 37
         },
         {
           "name": "if",
-          "startLine": 62,
+          "startLine": 69,
           "approximateCyclomatic": 37
         },
         {
-          "name": "if",
-          "startLine": 67,
+          "name": "dashboardLogLine",
+          "startLine": 72,
           "approximateCyclomatic": 34
         },
         {
           "name": "if",
-          "startLine": 71,
-          "approximateCyclomatic": 31
+          "startLine": 79,
+          "approximateCyclomatic": 30
+        },
+        {
+          "name": "if",
+          "startLine": 94,
+          "approximateCyclomatic": 22
+        },
+        {
+          "name": "if",
+          "startLine": 98,
+          "approximateCyclomatic": 19
         },
         {
           "name": "catch",
-          "startLine": 73,
-          "approximateCyclomatic": 29
-        },
-        {
-          "name": "if",
-          "startLine": 75,
-          "approximateCyclomatic": 28
-        },
-        {
-          "name": "await",
-          "startLine": 76,
-          "approximateCyclomatic": 24
-        },
-        {
-          "name": "if",
-          "startLine": 87,
+          "startLine": 100,
           "approximateCyclomatic": 17
         },
         {
+          "name": "if",
+          "startLine": 102,
+          "approximateCyclomatic": 16
+        },
+        {
+          "name": "await",
+          "startLine": 103,
+          "approximateCyclomatic": 12
+        },
+        {
           "name": "catch",
-          "startLine": 104,
+          "startLine": 111,
           "approximateCyclomatic": 6
         },
         {
           "name": "startPoller",
-          "startLine": 114,
+          "startLine": 120,
           "approximateCyclomatic": 5
         },
         {
           "name": "if",
-          "startLine": 115,
+          "startLine": 121,
           "approximateCyclomatic": 5
         },
         {
           "name": "run",
-          "startLine": 116,
+          "startLine": 122,
           "approximateCyclomatic": 4
         },
         {
           "name": "catch",
-          "startLine": 126,
+          "startLine": 130,
           "approximateCyclomatic": 4
         },
         {
           "name": "if",
-          "startLine": 136,
+          "startLine": 140,
           "approximateCyclomatic": 3
         }
       ]
@@ -1123,90 +1330,109 @@
       ]
     },
     {
+      "file": "tests/analyze-citypulse-tests.js",
+      "loc": 28,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": []
+    },
+    {
+      "file": "tests/evaluate-simulator-tests.js",
+      "loc": 27,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": []
+    },
+    {
       "file": "tests/run-tests.js",
-      "loc": 141,
+      "loc": 204,
       "commentLines": 12,
-      "commentRatio": 0.0851,
+      "commentRatio": 0.0588,
       "functions": [
         {
           "name": "ok",
           "startLine": 5,
-          "approximateCyclomatic": 19
+          "approximateCyclomatic": 20
         },
         {
           "name": "aqLoc",
           "startLine": 11,
-          "approximateCyclomatic": 22
+          "approximateCyclomatic": 23
         },
         {
           "name": "J",
           "startLine": 20,
-          "approximateCyclomatic": 31
+          "approximateCyclomatic": 29
         },
         {
           "name": "boot",
           "startLine": 21,
-          "approximateCyclomatic": 31
+          "approximateCyclomatic": 30
         },
         {
           "name": "JSDOM",
           "startLine": 22,
-          "approximateCyclomatic": 32
+          "approximateCyclomatic": 30
         },
         {
           "name": "fetch",
           "startLine": 22,
-          "approximateCyclomatic": 32
+          "approximateCyclomatic": 31
         },
         {
           "name": "alert",
           "startLine": 22,
-          "approximateCyclomatic": 32
+          "approximateCyclomatic": 31
         },
         {
           "name": "eval",
-          "startLine": 113,
-          "approximateCyclomatic": 3
+          "startLine": 167,
+          "approximateCyclomatic": 4
         },
         {
           "name": "eval",
-          "startLine": 118,
-          "approximateCyclomatic": 3
+          "startLine": 172,
+          "approximateCyclomatic": 4
         },
         {
           "name": "eval",
-          "startLine": 127,
-          "approximateCyclomatic": 3
+          "startLine": 181,
+          "approximateCyclomatic": 4
         },
         {
           "name": "eval",
-          "startLine": 132,
-          "approximateCyclomatic": 3
+          "startLine": 186,
+          "approximateCyclomatic": 4
         },
         {
           "name": "eval",
-          "startLine": 139,
-          "approximateCyclomatic": 3
+          "startLine": 193,
+          "approximateCyclomatic": 4
         },
         {
           "name": "eval",
-          "startLine": 144,
+          "startLine": 198,
+          "approximateCyclomatic": 4
+        },
+        {
+          "name": "trustCell",
+          "startLine": 213,
           "approximateCyclomatic": 3
         }
       ]
     }
   ],
   "totals": {
-    "loc": 2069,
-    "comments": 149,
-    "functions": 215,
-    "commentRatio": 0.072
+    "loc": 2549,
+    "comments": 143,
+    "functions": 254,
+    "commentRatio": 0.0561
   },
   "duplication": {
-    "totalNonBlankLinesScanned": 2218,
+    "totalNonBlankLinesScanned": 2692,
     "repeatedSixLineBlocks": 3,
     "duplicatedLineEstimate": 36,
-    "duplicationRatioEstimate": 0.0162
+    "duplicationRatioEstimate": 0.0134
   },
   "eslint": {
     "available": false,
