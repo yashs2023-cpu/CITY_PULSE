@@ -14,6 +14,8 @@ let pass=0; const ok=(c,m)=>{ assert(c,m); pass++; console.log('  ✓',m); };
   const B=`http://127.0.0.1:${s.address().port}`, call=async(p,body,tok,base=B)=>{ const r=await fetch(base+p,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(tok?{Authorization:'Bearer '+tok}:{})},body:body?JSON.stringify(body):undefined}); return {status:r.status,j:await r.json()}; };
   console.log('Workflow rules');
   ok(W.validateSubmission({type:'planned_work',category:'road_construction',title:'Road work',description:'Resurfacing the road',road:'Anna Salai'}).errors.length>=2,'planned_work needs permit reference and dates');
+  const normalizedSubmission=W.validateSubmission({type:' INCIDENT ',category:' ACCIDENT ',title:'Crash here',description:'Two cars collided',road:'OMR'});
+  ok(normalizedSubmission.errors.length===0&&normalizedSubmission.value.type==='incident'&&normalizedSubmission.value.category==='accident','submission type and category are normalized');
   ok(W.validateSubmission({type:'incident',category:'accident',title:'Crash here',description:'Two cars collided',road:'OMR',website:'spam'}).errors[0]==='Rejected','honeypot field rejects bots');
   ok(!W.canTransition('rejected','approved')&&W.canTransition('submitted','approved'),'state machine blocks rejected→approved');
   console.log('Public submission & access control');

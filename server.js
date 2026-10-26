@@ -100,8 +100,11 @@ const server = http.createServer(async (req, res) => {
     }
     if (u.pathname === '/api/log' && req.method === 'POST') { // dashboard reports each provider fetch outcome (for uptime + T3 simulator validation)
       let d = ''; for await (const ch of req) { d += ch; if (d.length > 4000) return send(res, 413, { error: 'too large' }); }
-      const b = JSON.parse(d || '{}'); if (!['weather', 'airQuality', 'traffic', 'notices'].includes(b.source)) return send(res, 400, { error: 'bad source' });
-      logLine(dashboardLogLine(b)); return send(res, 204, '');
+      const b = JSON.parse(d || '{}');
+      const source = typeof b.source === 'string' ? b.source.trim().toLowerCase() : '';
+      const normalized = { ...b, source: source === 'airquality' ? 'airQuality' : source };
+      if (!['weather', 'airQuality', 'traffic', 'notices'].includes(normalized.source)) return send(res, 400, { error: 'bad source' });
+      logLine(dashboardLogLine(normalized)); return send(res, 204, '');
     }
     if (u.pathname === '/dashboard/system-quality-section.html') {
       return send(res, 200, fs.readFileSync(path.join(__dirname, 'dashboard', 'system-quality-section.html')), MIME['.html']);

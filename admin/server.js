@@ -92,7 +92,8 @@ async function createServer(opts = {}) {
           const r = store.getReport(d[1]); if (!r) return send(res, 404, { error: 'Report not found' });
           const b = await readBody(req), note = String(b.note || '').slice(0, 500);
           if (d[2] === 'decision') {
-            const to = { approve: 'approved', reject: 'rejected', request_changes: 'changes_requested', review: 'under_review' }[b.decision];
+            const decision = typeof b.decision === 'string' ? b.decision.trim().toLowerCase() : '';
+            const to = { approve: 'approved', reject: 'rejected', request_changes: 'changes_requested', review: 'under_review' }[decision];
             if (!to) return send(res, 400, { error: 'decision must be approve, reject, request_changes or review' });
             if (!W.canTransition(r.state, to)) return send(res, 409, { error: `Cannot go from ${r.state} to ${to}` });
             if (to === 'approved') {
@@ -103,13 +104,14 @@ async function createServer(opts = {}) {
               if (!r.activeUntil) { r.activeUntil = new Date(Date.now() + 24 * 3600000).toISOString(); } // incidents/advisories expire in 24h unless set
               r.approvedAt = new Date().toISOString();
             }
-            r.state = to; r.reviewer = a.user; r.reviewNote = note; store.saveReport(r); store.audit(a.user, b.decision, r.id, { note });
+            r.state = to; r.reviewer = a.user; r.reviewNote = note; store.saveReport(r); store.audit(a.user, decision, r.id, { note });
             return send(res, 200, { id: r.id, state: r.state });
           }
-          const to = { resolve: 'resolved', cancel: 'cancelled' }[b.action];
+          const action = typeof b.action === 'string' ? b.action.trim().toLowerCase() : '';
+          const to = { resolve: 'resolved', cancel: 'cancelled' }[action];
           if (!to) return send(res, 400, { error: 'action must be resolve or cancel' });
           if (!W.canTransition(r.state, to)) return send(res, 409, { error: `Cannot go from ${r.state} to ${to}` });
-          r.state = to; r.reviewNote = note || r.reviewNote; store.saveReport(r); store.audit(a.user, b.action, r.id, { note });
+          r.state = to; r.reviewNote = note || r.reviewNote; store.saveReport(r); store.audit(a.user, action, r.id, { note });
           return send(res, 200, { id: r.id, state: r.state });
         }
       }
