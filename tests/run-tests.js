@@ -2,6 +2,7 @@
 const fs=require('fs'), path=require('path'), {JSDOM}=require('jsdom'), assert=require('assert');
 const {parseFlow,parseIncidents,pollOk,dashboardLogLine,server}=require('../server.js');
 const html=fs.readFileSync(path.join(__dirname,'../project_citypulse.html'),'utf8');
+const qualityHtml=fs.readFileSync(path.join(__dirname,'../dashboard/system-quality-section.html'),'utf8');
 let pass=0; const ok=(c,m)=>{ assert(c,m); pass++; console.log('  ✓',m); };
 const NOW=Math.floor(Date.now()/3600000)*3600; // top of the current hour (unix s)
 const hrs=Array.from({length:48},(_,i)=>NOW-24*3600+i*3600);
@@ -17,7 +18,7 @@ const tr={provider:'TomTom Traffic API',fetchedAt:Date.now(),bbox:'80.15,12.96,8
 const notices={fetchedAt:Date.now(),notices:[
   {id:'n1',type:'planned_work',category:'road_construction',title:'Drainage upgrade',description:'Night work, one lane closed',road:'Anna Salai',lat:null,lon:null,activeFrom:new Date(Date.now()-3600e3).toISOString(),activeUntil:new Date(Date.now()+864e5).toISOString(),alternative:'GST Road',verifiedBy:'Authority (simulated role)'},
   {id:'n2',type:'incident',category:'accident',title:'Verified crash',description:'Two vehicles, lane blocked',road:'MG Road',lat:13.061,lon:80.242,verifiedBy:'Authority (simulated role)'}]};
-const J=(b,s=200)=>Promise.resolve({ok:s<400,status:s,json:()=>Promise.resolve(b)});
+const J=(b,s=200)=>Promise.resolve({ok:s<400,status:s,json:()=>Promise.resolve(b),text:()=>Promise.resolve(typeof b==='string'?b:JSON.stringify(b))});
 async function boot(router){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'http://localhost:3000/',pretendToBeVisual:true,beforeParse(w){ w.fetch=(u,o)=>router(String(u),o); w.alert=()=>{}; }});
   await new Promise(r=>setTimeout(r,400)); return dom;
@@ -47,6 +48,9 @@ async function boot(router){
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'weather',padding:'x'.repeat(4100)})
     });
     ok(oversized.status===413,'/api/log rejects request bodies over 4000 bytes with 413');
+    const quality=await fetch(`http://127.0.0.1:${port}/dashboard/system-quality-section.html`);
+    ok(quality.status===200&&(await quality.text()).includes('id="system-quality"'),
+      'backend serves the frontend system-quality section resource');
   } finally {
     await new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()));
   }
@@ -58,6 +62,7 @@ async function boot(router){
     if(u.includes('api.open-meteo.com')) return J(wx);
     if(u.endsWith('/api/traffic')) return J(tr);
     if(u.endsWith('/api/public/notices')) return J(notices);
+    if(u.endsWith('/dashboard/system-quality-section.html')) return J(qualityHtml);
     if(u.endsWith('/api/config')||u.endsWith('/api/health')) return J({error:'x'},404);
     return J({},404); });
   let d=dom.window.document, txt=id=>d.getElementById(id).textContent;
@@ -74,6 +79,15 @@ async function boot(router){
   ok(txt('repairQueueTable').includes('Roadworks'),'incident table rendered');
   ok(txt('alertsTable').includes('US AQI 118'),'alert rule fired from live AQI');
   ok(txt('mobNotices').includes('Drainage upgrade')&&txt('mobNotices').includes('GST Road')&&txt('mobNotices').includes('Approved by the authority server'),'approved planned work shown with reason and alternative route');
+  ok(d.getElementById('submitReportLink').href==='http://localhost:4000/'&&d.getElementById('authorityConsoleLink').href==='http://localhost:4000/admin',
+    'dashboard report controls link to the configured authority report and admin pages');
+  const qualityNav=Array.from(d.querySelectorAll('.nav-item')).find(item=>item.dataset.section==='system-quality');
+  ok(!!qualityNav&&!!d.getElementById('system-quality'),'system-quality resource is loaded into dashboard navigation');
+  qualityNav.click();
+  ok(txt('sq-live')==='100%'&&txt('sq-unavailable')==='0%'&&txt('sq-trust').endsWith('/ 100'),
+    'system-quality section renders live source status and trust from dashboard readings');
+  ok(d.querySelector('#sq-providers').textContent.includes('100%')&&d.querySelector('#sq-providers').textContent.includes('ms'),
+    'system-quality provider success and latency metrics use completed fetches');
   ok(/MG Road.*Accident — authority-verified/.test(txt('congestionTable').replace(/\s+/g,' ')),'MG Road slow-down classified as authority-verified accident');
   ok(/OMR.*(Moderate|Free-flow)/.test(txt('congestionTable').replace(/\s+/g,' '))&&!/OMR[^A-Z]*Accident/.test(txt('congestionTable').replace(/\s+/g,' ')),'slow traffic without any report is NOT called an accident');
   ok(txt('alertsTable').includes('Avoid route — planned work')&&txt('alertsTable').includes('GST Road'),'planned work raises an avoid-route alert with alternative');
@@ -93,6 +107,7 @@ async function boot(router){
     if(u.includes('api.open-meteo.com')) return J(wx);
     if(u.endsWith('/api/traffic')) return J(tr);
     if(u.endsWith('/api/public/notices')) return J(notices);
+    if(u.endsWith('/dashboard/system-quality-section.html')) return J(qualityHtml);
     return J({},404);
   });
   const weatherLog=logRequests.find(r=>r.source==='weather'&&r.ok);
@@ -149,6 +164,7 @@ async function boot(router){
     if(u.includes('api.open-meteo.com')) return J(wx);
     if(u.endsWith('/api/traffic')) return J(tr);
     if(u.endsWith('/api/public/notices')) return J(notices);
+    if(u.endsWith('/dashboard/system-quality-section.html')) return J(qualityHtml);
     if(u.endsWith('/api/config')||u.endsWith('/api/health')) return J({error:'x'},404);
     return J({},404);
   });
@@ -218,6 +234,18 @@ async function boot(router){
   const displayedAged=parseInt(trustCell(),10);
   ok(displayedAged<displayedFresh&&displayedAged===dom.window.eval('trustScore(store.r.temp)'),
     'Analytics recalculates trust from current observedAt age when rendered');
+  dom.window.document.querySelector('[data-section="settings"]').click();
+  dom.window.document.getElementById('setNotices').value='https://authority.example';
+  dom.window.document.getElementById('saveSet').click();
+  ok(dom.window.document.getElementById('submitReportLink').href==='https://authority.example/'&&
+     dom.window.document.getElementById('authorityConsoleLink').href==='https://authority.example/admin',
+    'authority links follow the configurable Settings URL');
+  ok(JSON.parse(dom.window.localStorage.getItem('cp_cfg')).noticesUrl==='https://authority.example',
+    'authority server URL persists in browser settings');
+  dom.window.document.getElementById('setNotices').value='javascript:alert(1)';
+  dom.window.document.getElementById('saveSet').click();
+  ok(JSON.parse(dom.window.localStorage.getItem('cp_cfg')).noticesUrl==='https://authority.example',
+    'settings reject non-HTTP authority URLs');
   dom.window.close();
 
   console.log(`\n${pass} checks passed`); process.exit(0);

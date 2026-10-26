@@ -38,6 +38,8 @@ Weather and air quality are called from the browser (no key, CORS enabled). Traf
 ## Authority layer (new)
 A separate server (`admin/server.js`, port 4000) lets citizens submit anonymous reports (incidents, planned works with a permit reference, advisories). An authority officer reviews them in `/admin`; only **approved, time-limited** notices are exposed at `/api/public/notices` and shown on the dashboard as *Authority-verified* (never mixed with sensor/provider data). A slow-down alone is labelled "Heavy traffic — no incident reported"; "accident" appears only when TomTom or an approved report says so. The authority role is simulated; the permit reference is checked by a human. See `docs/AUTHORITY_SPEC.md` and `docs/ARCHITECTURE.md`.
 
+The dashboard Reports page links to the citizen report form and authority console. Configure the authority server URL in Settings when it is not at `http://localhost:4000`. Live System Quality is loaded from `dashboard/system-quality-section.html`; its provider success and latency figures reflect fetches in the current browser session, while freshness and trust come from the shared live-reading store. Authority workflow metrics remain private to the authenticated console.
+
 ## Setup
 ```bash
 cp .env.example .env        # add TOMTOM_API_KEY (free key: developer.tomtom.com)
@@ -71,7 +73,7 @@ Baseline = latest live readings for the selected zone (nearest monitored corrido
 These parameters are **demonstration assumptions, not calibrated or validated**. If a baseline is missing the affected card is disabled with the missing input named. Projections are tagged "Scenario projection" and never feed the live KPI cards.
 
 ## Tests actually run
-`npm test` (54 checks: 33 dashboard + 21 authority workflow): TomTom response parsers; success path rendering with fixtures shaped like documented provider responses; total-failure path (no readings, no numbers, key message shown); stale path (old value kept, labelled, original timestamp kept); simulator formula; HTML escaping of provider text. **These use fixtures, not live APIs** — the build sandbox could not reach the internet. Live verification checklist is in DATA_SOURCES.md.
+`npm test` (87 checks: 57 dashboard + 30 authority workflow): TomTom response parsers; provider success/failure and stale paths; simulator formula; HTML escaping; frontend quality-section loading and live metrics; configurable authority links; and authority permissions/workflows. **These use fixtures, not live APIs.** Live verification checklist is in DATA_SOURCES.md.
 
 ## Known limitations
 - Open-Meteo "current" and CAMS values are model grid estimates (CAMS is coarse over India); zones share grid cells, so zone values are near-identical.
@@ -97,8 +99,8 @@ These parameters are **demonstration assumptions, not calibrated or validated**.
 - Evaluated offline and slow-network behaviour.
 
 ### 4. Automated Testing and Access Verification
-- Recorded **69 passing automated checks**:
-  - 39 main application checks.
+- Recorded **87 passing automated checks**:
+  - 57 main application checks.
   - 30 authority/admin checks.
 - Verified viewer permissions and unauthorized decision-action restrictions.
 - Tested application behaviour involving report handling, provider failures, stale readings, trust scores, audit logging, and abuse limits.
