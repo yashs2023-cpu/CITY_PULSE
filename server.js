@@ -104,6 +104,9 @@ const server = http.createServer(async (req, res) => {
       const b = JSON.parse(d || '{}'); if (!['weather', 'airQuality', 'traffic', 'notices'].includes(b.source)) return send(res, 400, { error: 'bad source' });
       logLine(dashboardLogLine(b)); return send(res, 204, '');
     }
+    if (u.pathname === '/dashboard/system-quality-section.html') {
+      return send(res, 200, fs.readFileSync(path.join(__dirname, 'dashboard', 'system-quality-section.html')), MIME['.html']);
+    }
     const f = u.pathname === '/' ? 'project_citypulse.html' : path.basename(u.pathname);
     const ok = ['project_citypulse.html', 'README.md', 'DATA_SOURCES.md'].includes(f);
     if (!ok) return send(res, 404, 'Not found', 'text/plain');
