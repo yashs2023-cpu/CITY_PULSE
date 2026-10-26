@@ -35,6 +35,21 @@ Browser (project_citypulse.html)                       Node backend (server.js, 
 ```
 Weather and air quality are called from the browser (no key, CORS enabled). Traffic goes through the backend so the TomTom key never reaches browser code.
 
+## Repository layout
+
+```text
+admin/       Authority API, storage, workflow, and web pages
+dashboard/   Dashboard sections loaded by the browser
+docs/        Architecture, setup, QA, source guides, and evidence
+legacy/      Preserved original prototype
+scripts/     Metrics and log-analysis utilities
+tests/       Dashboard, admin, and utility test suites
+archive/     Historical T4 repository snapshot
+archive/root-imports/ Superseded loose imports kept for reference
+```
+
+The active application entry points and configuration stay at the root: `server.js`, `project_citypulse.html`, `config.json`, and `.env.example`. Runtime secrets belong only in the ignored local `.env`.
+
 ## Authority layer (new)
 A separate server (`admin/server.js`, port 4000) lets citizens submit anonymous reports (incidents, planned works with a permit reference, advisories). An authority officer reviews them in `/admin`; only **approved, time-limited** notices are exposed at `/api/public/notices` and shown on the dashboard as *Authority-verified* (never mixed with sensor/provider data). A slow-down alone is labelled "Heavy traffic — no incident reported"; "accident" appears only when TomTom or an approved report says so. The authority role is simulated; the permit reference is checked by a human. See `docs/AUTHORITY_SPEC.md` and `docs/ARCHITECTURE.md`.
 
@@ -73,7 +88,7 @@ Baseline = latest live readings for the selected zone (nearest monitored corrido
 These parameters are **demonstration assumptions, not calibrated or validated**. If a baseline is missing the affected card is disabled with the missing input named. Projections are tagged "Scenario projection" and never feed the live KPI cards.
 
 ## Tests actually run
-`npm test` (87 checks: 57 dashboard + 30 authority workflow): TomTom response parsers; provider success/failure and stale paths; simulator formula; HTML escaping; frontend quality-section loading and live metrics; configurable authority links; and authority permissions/workflows. **These use fixtures, not live APIs.** Live verification checklist is in DATA_SOURCES.md.
+`npm test` (89 checks: 58 dashboard + 31 authority workflow): TomTom response parsers; provider success/failure and stale paths; simulator formula; HTML escaping; frontend quality-section loading and live metrics; configurable authority links; and authority permissions/workflows. **These use fixtures, not live APIs.** See [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) for the live verification checklist.
 
 ## Known limitations
 - Open-Meteo "current" and CAMS values are model grid estimates (CAMS is coarse over India); zones share grid cells, so zone values are near-identical.
@@ -81,45 +96,3 @@ These parameters are **demonstration assumptions, not calibrated or validated**.
 - Traffic/incidents require a TomTom key; free-tier daily limits apply.
 - No verified Chennai public-transit, crowd, utility-outage or noise feed is configured.
 - Simulator coefficients are unvalidated assumptions.
-
-  ## T4 — User Interface, Quality Assurance and Documentation
-
-### 1. Role-Based Access Control
-- Implemented a viewer read-only interface by hiding approval, rejection, and resolution controls from viewer accounts.
-- Ensured that administrative decision controls remain available to authorized admin/officer users.
-- Verified that unauthorized viewer actions through the API are rejected with HTTP 403 Forbidden responses.
-
-### 2. Browser Compatibility Testing
-- Tested the CityPulse dashboard in Google Chrome and Microsoft Edge.
-- Checked the visibility and rendering of dashboard components, including the sidebar, status cards, charts, active alerts, and data availability indicators.
-- Evaluated the responsive layout at mobile widths and documented analytics table layout issues.
-
-### 3. Functional and Workflow Testing
-- Tested citizen report submission and form validation.
-- Verified the authority workflow, including report review, change requests, resubmission, approval, and resolution.
-- Checked that report status and timestamps persist after refreshing the authority console.
-- Verified that resolved notices no longer appear as active notices on the public dashboard.
-- Tested keyboard navigation, visible focus indicators, and form validation feedback.
-- Evaluated offline and slow-network behaviour.
-
-### 4. Automated Testing and Access Verification
-- Recorded **87 passing automated checks**:
-  - 57 main application checks.
-  - 30 authority/admin checks.
-- Verified viewer permissions and unauthorized decision-action restrictions.
-- Tested application behaviour involving report handling, provider failures, stale readings, trust scores, audit logging, and abuse limits.
-
-### 5. Accessibility Review
-- Conducted an accessibility scan using the WAVE browser extension.
-- Recorded colour-contrast and form-label findings for further investigation.
-- Documented accessibility observations alongside manual keyboard-navigation and focus-visibility checks.
-
-### 6. Project Documentation
-Prepared and maintained the following project documentation:
-
-- `docs/browser-test-report.md` — browser compatibility, functional testing, automated test results, and accessibility findings.
-- `docs/demo-script.md` — step-by-step demonstration flow for the CityPulse application.
-- `docs/qa-sheet.md` — project questions and answers to support technical review and demonstration.
-
-### 7. Presentation Support
-Organised technical information about role-based access, browser testing, quality assurance, and automated test results to support explanation of the T4 contribution during the project review.

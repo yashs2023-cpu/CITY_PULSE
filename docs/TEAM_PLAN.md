@@ -35,7 +35,7 @@ git checkout -b t1-data  # your own branch
 | 3-6 | Investigate Chennai transit/open data (Metro, MTC, data.gov.in, GCC) | feed or finding with URLs/dates |
 | 2-7 | Authority backend: SQLite instead of `db.json`, roles (admin/viewer), scrypt password hashing, workflow-metrics endpoint for T2 (`docs/AUTHORITY_SPEC.md` backlog 1,2,6) | upgraded `admin/` + tests |
 | 7-10 | Analyse log with `node scripts/log-summary.js`: uptime, latency, failure causes | table for T2/T3/report |
-**Done when:** every source in `DATA_SOURCES.md` has a recorded real test; authority tests green.
+**Done when:** every source in `docs/DATA_SOURCES.md` has a recorded real test; authority tests green.
 
 ## T2 — Software Metrics + System Quality
 | Days | Task | Output |

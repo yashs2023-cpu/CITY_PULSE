@@ -60,7 +60,7 @@ Slow-down alone → "Heavy traffic — no incident reported". "Accident" only if
 | Component | Owner |
 |---|---|
 | `server.js`, data layer, CI, trust score, deploy | Lead |
-| `admin/` backend, `config.json`, `DATA_SOURCES.md`, sensor/transit sources | T1 |
+| `admin/` backend, `config.json`, `docs/DATA_SOURCES.md`, sensor/transit sources | T1 |
 | System Quality section, GQM, metrics, tests | T2 |
 | Simulator, Analytics, `scripts/evaluate-simulator.js` | T3 |
 | `admin/report.html`, `admin/admin.html`, notices panel UI, accessibility, PPT, demo | T4 |

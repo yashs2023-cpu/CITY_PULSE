@@ -35,7 +35,7 @@ Values are model estimates, not sensor readings. Timestamps and example values a
 
 ## Source search evidence
 
-The source discovery checks and their limitations are recorded in [`../../DATA_SOURCES.md`](../../DATA_SOURCES.md):
+The source discovery checks and their limitations are recorded in [`../DATA_SOURCES.md`](../DATA_SOURCES.md):
 
 - OpenAQ and CPCB: no Chennai sensor endpoint/measurement was verified; keep sensor AQ data unavailable.
 - Chennai Metro Rail and MTC: official pages checked, but no public machine-readable real-time feed/GTFS endpoint was verified.
@@ -46,4 +46,4 @@ An inaccessible catalog is not evidence that a feed does not exist. Recheck data
 
 ## Reproduction
 
-With the dashboard server running and `TOMTOM_API_KEY` configured in the local `.env`, request `http://localhost:3000/api/traffic`. The key is read only by the local server; do not paste it into screenshots or commit `.env`. The Open-Meteo checks require no key and use the request URLs in [`../../DATA_SOURCES.md`](../../DATA_SOURCES.md).
+With the dashboard server running and `TOMTOM_API_KEY` configured in the local `.env`, request `http://localhost:3000/api/traffic`. The key is read only by the local server; do not paste it into screenshots or commit `.env`. The Open-Meteo checks require no key and use the request URLs in [`../DATA_SOURCES.md`](../DATA_SOURCES.md).

@@ -51,6 +51,9 @@ async function boot(router){
     const quality=await fetch(`http://127.0.0.1:${port}/dashboard/system-quality-section.html`);
     ok(quality.status===200&&(await quality.text()).includes('id="system-quality"'),
       'backend serves the frontend system-quality section resource');
+    const sources=await fetch(`http://127.0.0.1:${port}/docs/DATA_SOURCES.md`);
+    ok(sources.status===200&&(await sources.text()).includes('Open-Meteo'),
+      'backend serves the data-source guide from docs');
   } finally {
     await new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()));
   }

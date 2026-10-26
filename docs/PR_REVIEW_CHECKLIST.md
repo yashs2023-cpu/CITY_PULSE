@@ -7,7 +7,7 @@ Use this for every pull request before merging into `main`.
 | Files changed | Expected owner | Action if wrong owner |
 |---|---|---|
 | `server.js`, `project_citypulse.html` data layer, `CI`, `README.md`, trust score | Lead | Request changes, do not merge |
-| `config.json`, `DATA_SOURCES.md`, `admin/`, sensor/transit providers | T1 | OK to review and merge |
+| `config.json`, `docs/DATA_SOURCES.md`, `admin/`, sensor/transit providers | T1 | OK to review and merge |
 | `docs/gqm-plan.md`, `docs/metrics-report.md`, System Quality section, `tests/` | T2 | OK to review and merge |
 | `scripts/evaluate-simulator.js`, Simulator section, Analytics section | T3 | OK to review and merge |
 | CSS only, `docs/browser-test-report.md`, `docs/demo-script.md`, `docs/qa-sheet.md`, `admin/admin.html`, `admin/report.html` | T4 | OK to review and merge |

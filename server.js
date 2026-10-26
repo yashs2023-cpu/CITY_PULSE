@@ -109,8 +109,10 @@ const server = http.createServer(async (req, res) => {
     if (u.pathname === '/dashboard/system-quality-section.html') {
       return send(res, 200, fs.readFileSync(path.join(__dirname, 'dashboard', 'system-quality-section.html')), MIME['.html']);
     }
-    const f = u.pathname === '/' ? 'project_citypulse.html' : path.basename(u.pathname);
-    const ok = ['project_citypulse.html', 'README.md', 'DATA_SOURCES.md'].includes(f);
+    const f = u.pathname === '/' ? 'project_citypulse.html'
+      : ['/DATA_SOURCES.md', '/docs/DATA_SOURCES.md'].includes(u.pathname) ? 'docs/DATA_SOURCES.md'
+        : path.basename(u.pathname);
+    const ok = ['project_citypulse.html', 'README.md', 'docs/DATA_SOURCES.md'].includes(f);
     if (!ok) return send(res, 404, 'Not found', 'text/plain');
     send(res, 200, fs.readFileSync(path.join(__dirname, f)), MIME[path.extname(f)] || 'text/plain');
   } catch (e) { send(res, 500, { error: e.message }); }
