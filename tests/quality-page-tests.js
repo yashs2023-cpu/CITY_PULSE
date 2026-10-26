@@ -1,0 +1,13 @@
+'use strict';
+const fs = require('fs');
+const assert = require('assert');
+const html = fs.readFileSync(require('path').join(__dirname, '..', 'project_citypulse.html'), 'utf8');
+assert(html.includes('id="quality"'), 'System Quality section exists');
+assert(html.includes('data-section="quality"'), 'System Quality navigation exists');
+assert(html.includes('function renderQuality()'), 'System Quality renderer exists');
+assert(html.includes('No data yet'), 'missing values have explicit empty state');
+assert(html.includes("readingStatus(r)"), 'status distribution derives from live reading state');
+assert(html.includes('scores.reduce((a,b)=>a+b,0)/scores.length'), 'trust summary derives from current reading scores');
+assert(html.includes("quality-provider"), 'provider metrics section exists');
+assert(html.includes("quality-workflow"), 'authority workflow section exists');
+console.log('System Quality page checks passed.');

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -302,6 +302,13 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
       Reports
     </div>
+    <div class="nav-item" data-section="quality">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
+    <path d="M9 12l2 2 4-4"/>
+  </svg>
+  <span>System Quality</span>
+</div>
     <div class="nav-item" data-section="settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1h.1a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
       Settings
@@ -464,6 +471,36 @@
       </div>
     </section>
 
+    <!-- SYSTEM QUALITY -->
+    <section class="section" id="quality">
+      <div class="section-head">
+        <h1>System Quality</h1>
+        <p>Live reading freshness, trust scores and provider health</p>
+      </div>
+      <div class="panels-grid">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Reading status</div><div class="panel-tag">CURRENT STATE</div></div>
+          <div class="table-wrap"><table id="qualityStates"></table></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Trust summary</div><div class="panel-tag">0â€“100</div></div>
+          <div class="card"><div class="card-label">Average trust score</div><div class="card-value" id="qualityTrust">No data yet</div><div class="card-delta flat">Project-defined score across current readings</div></div>
+          <div class="notice">Provider success rates, latency percentiles and authority approval statistics are not inferred from live readings. They remain unavailable until backed by historical request logs or audit metrics.</div>
+        </div>
+      </div>
+      <div class="panels-grid">
+        <div class="panel quality-provider">
+          <div class="panel-head"><div class="panel-title">Provider status</div><div class="panel-tag">LIVE STATE</div></div>
+          <div class="table-wrap"><table id="qualityProviders"></table></div>
+        </div>
+        <div class="panel quality-workflow">
+          <div class="panel-head"><div class="panel-title">Authority workflow</div><div class="panel-tag">AUDIT METRICS</div></div>
+          <p>Approval rate: <strong id="qualityApproval">No data yet</strong></p>
+          <p>Time to approve: <strong id="qualityApprovalTime">No data yet</strong></p>
+          <div class="notice">Connect verified workflow-metrics or audit data before displaying these values.</div>
+        </div>
+      </div>
+    </section>
     <!-- SETTINGS -->
     <section class="section" id="settings">
       <div class="section-head"><h1>Settings</h1><p>City, refresh intervals and enabled sources — saved in this browser</p></div>
@@ -1129,12 +1166,54 @@ function onUpdate(id){
   if(id==='airQuality'){ renderEnv(); renderDash(); }
   if(id==='traffic'){ renderMob(); renderInfra(); renderDash(); }
   if(id==='notices'){ renderNotices(); renderMob(); renderDash(); }
-  renderAnalytics(); renderChip(); runSimulation();
+  renderAnalytics(); renderQuality(); renderChip(); runSimulation();
 }
-function renderAll(){ renderNotices(); renderDash(); renderMob(); renderEnv(); renderInfra(); renderHuman(); renderAnalytics(); runSimulation(); drawPulse(); renderChip(); }
+function renderQuality(){
+  const readings = Object.values(store.r);
+  const statuses = readings.map(r => readingStatus(r));
+  const live = statuses.filter(s => s === 'live').length;
+  const stale = statuses.filter(s => s === 'stale').length;
+  const enabledSources = Object.keys(SOURCES).filter(id => CFG.sources[id]);
+  const unavailable = enabledSources.filter(id => {
+    const source = store.src[id];
+    return source.state === 'unavailable' || source.state === 'error' ||
+      !readings.some(r => r.srcId === id);
+  }).length;
+
+  const scores = readings.map(r => r.trustScore).filter(v => Number.isFinite(v));
+  const averageTrust = scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+  const setValue = (id, value) => { const el = $(id); if (el) el.textContent = value; };
+
+  renderTable('qualityStates', [
+    {label:'Status',field:'status'},
+    {label:'Count',field:'count'},
+    {label:'Percentage',field:'percentage'}
+  ], readings.length ? [
+    {status:'Live',count:live,percentage:(live/readings.length*100).toFixed(1)+'%'},
+    {status:'Stale',count:stale,percentage:(stale/readings.length*100).toFixed(1)+'%'},
+    {status:'Unavailable',count:unavailable,percentage:enabledSources.length?(unavailable/enabledSources.length*100).toFixed(1)+'%':'No data yet'}
+  ] : [], 'No data yet');
+
+  setValue('qualityTrust', averageTrust == null ? 'No data yet' : averageTrust.toFixed(1));
+  setValue('qualityApproval', 'No data yet');
+  setValue('qualityApprovalTime', 'No data yet');
+
+  renderTable('qualityProviders', [
+    {label:'Source',field:'name'},
+    {label:'Status',field:'status'},
+    {label:'Last success',render:r=>r.lastOk?esc(fmtTime(r.lastOk,true)):'No data yet'},
+    {label:'Failures',field:'fails'}
+  ], Object.keys(SOURCES).map(id => ({
+    name:SOURCES[id].short,
+    status:CFG.sources[id] ? store.src[id].state : 'disabled',
+    lastOk:store.src[id].lastOk,
+    fails:store.src[id].fails
+  })), 'No data yet');
+}
+function renderAll(){ renderNotices(); renderDash(); renderMob(); renderEnv(); renderInfra(); renderHuman(); renderAnalytics(); renderQuality(); runSimulation(); drawPulse(); renderChip(); }
 
 /* ---------- navigation & wiring ---------- */
-const titles={dashboard:['City Overview','Live readings across city systems'],mobility:['Mobility Intelligence','Traffic flow & incident reports'],environment:['Environmental Intelligence','Weather & air quality (model-based)'],infrastructure:['Infrastructure Health','Provider incident reports'],human:['Human Activity','Public-demand data availability'],simulator:['What-If Simulator','Scenario projection from live baseline'],analytics:['Analytics','Readings, freshness & derived indicators'],reports:['Reports','Current-state report from available data'],settings:['Settings','City, refresh & sources']};
+const titles={dashboard:['City Overview','Live readings across city systems'],mobility:['Mobility Intelligence','Traffic flow & incident reports'],environment:['Environmental Intelligence','Weather & air quality (model-based)'],infrastructure:['Infrastructure Health','Provider incident reports'],human:['Human Activity','Public-demand data availability'],simulator:['What-If Simulator','Scenario projection from live baseline'],analytics:['Analytics','Readings, freshness & derived indicators'],reports:['Reports','Current-state report from available data'],quality:['System Quality','Live reading freshness, trust and provider health'],settings:['Settings','City, refresh & sources']};
 document.querySelectorAll('.nav-item').forEach(item=>item.addEventListener('click',()=>{
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); item.classList.add('active');
   const sec=item.dataset.section; document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); $(sec).classList.add('active');
@@ -1181,3 +1260,4 @@ boot();
 </script>
 </body>
 </html>
+

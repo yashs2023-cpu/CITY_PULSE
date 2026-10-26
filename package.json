@@ -1,19 +1,19 @@
-{
-  "name": "citypulse",
-  "version": "1.0.0",
-  "description": "CityPulse live-data smart-city dashboard",
-  "scripts": {
-    "start": "node server.js",
-    "admin": "node admin/server.js",
-    "test": "node tests/run-tests.js && node tests/admin-tests.js"
-  },
-  "devDependencies": {
-    "jsdom": "^24.0.0"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "dependencies": {
-    "sql.js": "^1.15.1"
-  }
+﻿{
+    "name":  "citypulse",
+    "version":  "1.0.0",
+    "description":  "CityPulse live-data smart-city dashboard",
+    "scripts":  {
+                    "start":  "node server.js",
+                    "admin":  "node admin/server.js",
+                    "test":  "node tests/run-tests.js \u0026\u0026 node tests/admin-tests.js \u0026\u0026 node tests/quality-page-tests.js"
+                },
+    "devDependencies":  {
+                            "jsdom":  "^24.0.0"
+                        },
+    "engines":  {
+                    "node":  "\u003e=18"
+                },
+    "dependencies":  {
+                         "sql.js":  "^1.15.1"
+                     }
 }
