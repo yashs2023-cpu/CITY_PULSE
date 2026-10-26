@@ -11,9 +11,9 @@ function validateSubmission(b) {
   const errors = [];
   if (!b || typeof b !== 'object') return { errors: ['Body must be a JSON object'] };
   if (b.website) return { errors: ['Rejected'] }; // honeypot field: humans leave it empty
-  const type = b.type;
+  const type = typeof b.type === 'string' ? b.type.trim().toLowerCase() : b.type;
   if (!TYPES.includes(type)) errors.push('type must be one of ' + TYPES.join(', '));
-  const category = str(b.category, 40);
+  const category = str(b.category, 40).toLowerCase();
   if (TYPES.includes(type) && !CATEGORIES[type].includes(category)) errors.push('category invalid for ' + type);
   const title = str(b.title, 120), description = str(b.description, 1000), road = str(b.road, 120), area = str(b.area, 80);
   if (title.length < 5) errors.push('title must be at least 5 characters');
