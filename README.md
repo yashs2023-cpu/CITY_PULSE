@@ -75,6 +75,21 @@ These parameters are **demonstration assumptions, not calibrated or validated**.
 
 ## Known limitations
 - Open-Meteo "current" and CAMS values are model grid estimates (CAMS is coarse over India); zones share grid cells, so zone values are near-identical.
+
+  ## T4 — UI, Browser Testing and Documentation
+
+- Browser testing and accessibility findings: `docs/browser-test-report.md`
+- Demo instructions: `docs/demo-script.md`
+- Project Q&A: `docs/qa-sheet.md`
+- Viewer read-only access and authority decision controls were tested.
+- Automated test suite: 69 checks passed in the recorded test run.
+
+### Known Issues
+
+- Analytics table layout is cramped at narrow mobile widths.
+- WAVE reported contrast and form-label findings that require further investigation.
+- Traffic data may be unavailable when the TomTom API key is not configured.
+
 - TomTom flow has no observation timestamp (fetch time shown, marked ≈) and no history; trend is session-only.
 - Traffic/incidents require a TomTom key; free-tier daily limits apply.
 - No verified Chennai public-transit, crowd, utility-outage or noise feed is configured.
