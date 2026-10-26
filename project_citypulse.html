@@ -131,6 +131,7 @@
     transition:background .2s, transform .2s, border-color .2s;
   }
   .refresh-btn:hover{background:rgba(34,211,238,0.14); transform:translateY(-1px); border-color:var(--cyan);}
+  .btn-row a.refresh-btn{display:inline-block;text-decoration:none;}
 
   .content{padding:26px 28px 60px 28px; flex:1;}
   .section{display:none; animation:fadein .25s ease;}
@@ -462,6 +463,14 @@
         </div>
         <pre class="report" id="reportPre">Click "Generate report" to build a report from the current readings.</pre>
       </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="panel-head"><div class="panel-title">Authority reports</div><div class="panel-tag">SEPARATE AUTHORITY SERVICE</div></div>
+        <p class="section-head">Submit an incident, planned work or advisory for review. Submitted reports appear on the dashboard only after approval.</p>
+        <div class="btn-row">
+          <a class="refresh-btn" id="submitReportLink" href="http://localhost:4000/" target="_blank" rel="noopener">Submit a city report</a>
+          <a class="refresh-btn" id="authorityConsoleLink" href="http://localhost:4000/admin" target="_blank" rel="noopener">Authority console</a>
+        </div>
+      </div>
     </section>
 
     <!-- SETTINGS -->
@@ -477,6 +486,7 @@
           <div><label>Air-quality refresh (s)</label><input type="number" min="300" id="setRa"></div>
           <div><label>Traffic refresh (s)</label><input type="number" min="120" id="setRt"></div>
           <div><label>Backend URL (traffic proxy)</label><input type="text" id="setApi"></div>
+          <div><label>Authority server URL</label><input type="text" id="setNotices"></div>
         </div>
         <label class="chk"><input type="checkbox" id="setEw"> Weather (Open-Meteo)</label>
         <label class="chk"><input type="checkbox" id="setEa"> Air quality (Open-Meteo / CAMS)</label>
@@ -484,6 +494,7 @@
         <label class="chk"><input type="checkbox" id="setEn"> Authority notices (admin server)</label>
         <div class="btn-row"><button class="refresh-btn" id="saveSet">Save &amp; reload data</button><button class="refresh-btn" id="resetSet">Reset to config.json</button></div>
         <div class="notice" id="keyStatus" style="margin:0">Checking backend…</div>
+        <div class="notice" id="authorityStatus" style="margin:8px 0 0">Checking authority server…</div>
         <div class="notice" style="margin:12px 0 0">Zone/corridor coordinates live in <b>config.json</b>. Changing the city here moves the weather/air-quality point; update the zone and corridor coordinates in <b>config.json</b> too, or the zone views will describe the wrong place. The TomTom API key is set only in the backend <b>.env</b> and never reaches this page.</div>
       </div>
     </section>
@@ -650,7 +661,7 @@ function trustScore(rd){
   if(!rd) return 0;
   // Freshness (0–100): observedAt age vs 3× refresh interval
   const iv  = (CFG.refreshSeconds[rd.srcId] || 600) * 1000;   // ms
-  const age = (rd.fetchedAt || Date.now()) - (rd.observedAt || rd.fetchedAt || Date.now());
+  const age = Date.now() - (Number.isFinite(rd.observedAt) ? rd.observedAt : Date.now());
   const F   = Math.max(0, Math.min(100, (1 - age / (3 * iv)) * 100));
   // Source type (0–100)
   const S   = TRUST_SOURCE_SCORE[rd.dataType] ?? 0;
@@ -680,7 +691,7 @@ const SOURCES = {
   notices:   {label:'CityPulse Authority notices (admin server)', short:'Authority'},
 };
 const store = { r:{}, series:{}, zones:[], corridors:[], incidents:null, notices:null, backendUp:false, session:{cong:[]}, src:{}, meta:{} };
-Object.keys(SOURCES).forEach(id=> store.src[id]={state:'idle', loading:false, inflight:false, lastOk:null, lastTry:null, err:null, fails:0, timer:null});
+Object.keys(SOURCES).forEach(id=> store.src[id]={state:'idle', loading:false, inflight:false, lastOk:null, lastTry:null, err:null, fails:0, attempts:0, successes:0, latencies:[], timer:null});
 
 function putReading(srcId, metric, label, value, unit, observedAt, dataType, opts={}){
   const rd = {metric, label, value, unit, location:opts.location||CFG.city.name, source:SOURCES[srcId].short,
@@ -830,10 +841,13 @@ async function run(id){
   const iv=(CFG.refreshSeconds[id]||600)*1000;
   if(!CFG.sources[id]){ s.state='disabled'; s.loading=false; onUpdate(id); return; }
   if(s.inflight) return;
-  s.inflight=true; s.loading=true; s.lastTry=Date.now(); renderChip(); const t0=performance.now();
+  s.inflight=true; s.loading=true; s.lastTry=Date.now(); s.attempts++; renderChip(); const t0=performance.now();
   try{
     await FETCHERS[id]();
-    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; schedule(id, iv); logFetch(id,true,performance.now()-t0,null);
+    const elapsed=performance.now()-t0;
+    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; s.successes++;
+    s.latencies.push(elapsed); if(s.latencies.length>50) s.latencies.shift();
+    schedule(id, iv); logFetch(id,true,elapsed,null,sourceReadings(id));
   }catch(e){
     s.err=e.message||String(e); logFetch(id,false,performance.now()-t0,s.err);
     if(e.unavailable){ s.state=s.lastOk?'stale':'unavailable'; schedule(id, iv); }
@@ -842,11 +856,24 @@ async function run(id){
   }finally{ s.inflight=false; s.loading=false; onUpdate(id); }
 }
 /* best-effort outcome log to the backend (feeds uptime metrics); silent if backend is down */
-function logFetch(id,ok,ms,error){ if(!store.backendUp) return; try{ fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:id,ok,ms,error})}).catch(()=>{}); }catch{} }
+function sourceReadings(id){
+  return Object.values(store.r).filter(r=>r.srcId===id).map(r=>({
+    metric:r.metric, value:r.value, unit:r.unit, location:r.location,
+    observedAt:r.observedAt, dataType:r.dataType, status:readingStatus(r)
+  }));
+}
+function logFetch(id,ok,ms,error,readings){
+  if(!store.backendUp) return;
+  try{
+    const body={source:id,ok,ms,error};
+    if(ok&&Array.isArray(readings)&&readings.length) body.readings=readings;
+    fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});
+  }catch{}
+}
 function startAll(){ Object.keys(SOURCES).forEach(id=>{ store.src[id].inflight=false; run(id); }); }
 function refreshAll(){ Object.keys(SOURCES).forEach(id=>run(id)); }
-function resetStore(){ store.r={}; store.series={}; store.zones=[]; store.corridors=[]; store.incidents=null; store.notices=null; store.notices=null; store.session={cong:[]}; store.meta={};
-  Object.keys(SOURCES).forEach(id=>{ const s=store.src[id]; clearTimeout(s.timer); Object.assign(s,{state:'idle',loading:false,inflight:false,lastOk:null,lastTry:null,err:null,fails:0}); }); }
+function resetStore(){ store.r={}; store.series={}; store.zones=[]; store.corridors=[]; store.incidents=null; store.notices=null; store.session={cong:[]}; store.meta={};
+  Object.keys(SOURCES).forEach(id=>{ const s=store.src[id]; clearTimeout(s.timer); Object.assign(s,{state:'idle',loading:false,inflight:false,lastOk:null,lastTry:null,err:null,fails:0,attempts:0,successes:0,latencies:[]}); }); }
 
 /* ---------- SVG / UI helpers ---------- */
 function badgeClass(status){
@@ -981,8 +1008,7 @@ function renderInfra(){
 }
 function renderHuman(){
   $('human-cards').innerHTML=[
-    rcard('feels','Feels-like Temperature',{srcId:'weather',dp:1,accent:'var(--amber)'}),
-    rcard('precip','Rainfall (demand context)',{srcId:'weather',dp:1,accent:'var(--cyan)'}),
+    rcard('feels','Feels-like Temperature',{srcId:'weather',dp:1,accent:'var(--amber)'}),rcard('precip','Rainfall (demand context)',{srcId:'weather',dp:1,accent:'var(--cyan)'}),
   ].join('');
   const rows=[
     ['Public transport service status','Unavailable','No verified Chennai Metro / MTC GTFS-Realtime feed has been configured.'],
@@ -1029,7 +1055,7 @@ function derivedList(){
 }
 function renderAnalytics(){
   const rs=Object.values(store.r); $('anaTag').textContent=rs.length+' METRICS';
-  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Trust',render:r=>{ const b=trustBand(r.trustScore??0); return `<span style="color:${b.color};font-weight:700;font-family:var(--font-mono)">${r.trustScore??'—'}</span><span style="color:var(--text-muted);font-size:10px"> ${b.label}</span>`; }},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
+  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Trust',render:r=>{ const score=trustScore(r), b=trustBand(score); return `<span style="color:${b.color};font-weight:700;font-family:var(--font-mono)">${score}</span><span style="color:var(--text-muted);font-size:10px"> ${b.label}</span>`; }},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
   const ch=[]; [['temp','Temperature',1],['aqi','US AQI',0],['pm25','PM2.5',1]].forEach(([k,l,dp])=>{ const s=store.series[k]; if(s&&s.points.length>1){ const a=s.points[0],b=s.points[s.points.length-1],span=(b.t-a.t)/3.6e6; ch.push({l,a,b,span,unit:s.unit,dp}); }});
   renderTable('anaChange',[{label:'Metric',render:r=>esc(r.l)},{label:'Then',render:r=>`${fmt(r.a.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.a.t,true)}</span>`},{label:'Now',render:r=>`${fmt(r.b.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.b.t,true)}</span>`},{label:`Δ over interval`,render:r=>`${(r.b.v-r.a.v>=0?'+':'')}${fmt(r.b.v-r.a.v,r.dp)} ${esc(r.unit)} (${fmt(r.span,0)} h)`}],ch,'Needs provider history — not available yet');
   renderTable('anaDerived',[{label:'Indicator',field:0},{label:'Current value',field:1},{label:'Formula',field:2},{label:'Inputs',field:3}],derivedList(),'No derived indicators yet');
@@ -1129,17 +1155,105 @@ function onUpdate(id){
   if(id==='airQuality'){ renderEnv(); renderDash(); }
   if(id==='traffic'){ renderMob(); renderInfra(); renderDash(); }
   if(id==='notices'){ renderNotices(); renderMob(); renderDash(); }
-  renderAnalytics(); renderChip(); runSimulation();
+  renderAnalytics(); renderChip(); runSimulation(); renderSystemQuality();
 }
-function renderAll(){ renderNotices(); renderDash(); renderMob(); renderEnv(); renderInfra(); renderHuman(); renderAnalytics(); runSimulation(); drawPulse(); renderChip(); }
+function renderAll(){ renderNotices(); renderDash(); renderMob(); renderEnv(); renderInfra(); renderHuman(); renderAnalytics(); runSimulation(); drawPulse(); renderChip(); renderSystemQuality(); }
+
+function qualityPercentile(values,p){
+  if(!values.length) return null;
+  const sorted=values.slice().sort((a,b)=>a-b);
+  return sorted[Math.min(sorted.length-1,Math.ceil(p*sorted.length)-1)];
+}
+function renderCityPulseQualityPanel(data){
+  const set=(id,value)=>{ const el=$(id); if(el) el.textContent=value==null?'—':String(value); };
+  const percentages=data.readingStates.percentages;
+  set('sq-live',percentages.live==null?null:percentages.live+'%');
+  set('sq-stale',percentages.stale==null?null:percentages.stale+'%');
+  set('sq-unavailable',percentages.unavailable==null?null:percentages.unavailable+'%');
+  set('sq-trust',data.trust.value==null?null:data.trust.value+' / 100');
+  set('sq-updated','Updated '+new Date(data.updatedAt).toLocaleTimeString());
+  set('sq-approval',null); set('sq-approve-time',null);
+  const authNote=document.querySelector('.sq-note');
+  if(authNote) authNote.textContent='Workflow metrics require an authority login; private audit data is not exposed on the public dashboard.';
+  const list=$('sq-providers');
+  if(!list) return;
+  list.replaceChildren();
+  const appendCell=(row,text,tag)=>{
+    const cell=document.createElement(tag||'span'); cell.textContent=text; row.appendChild(cell);
+  };
+  const header=document.createElement('div'); header.className='sq-provider';
+  ['Provider','Success','p50','p95'].forEach(text=>appendCell(header,text,'strong'));
+  list.appendChild(header);
+  Object.entries(data.providers).forEach(([name,stats])=>{
+    const row=document.createElement('div'); row.className='sq-provider';
+    appendCell(row,name);
+    appendCell(row,stats.successRate==null?'—':stats.successRate+'%');
+    appendCell(row,stats.p50Ms==null?'—':Math.round(stats.p50Ms)+' ms');
+    appendCell(row,stats.p95Ms==null?'—':Math.round(stats.p95Ms)+' ms');
+    list.appendChild(row);
+  });
+}
+function renderSystemQuality(){
+  const enabled=Object.keys(SOURCES).filter(id=>CFG.sources[id]);
+  const counts={live:0,stale:0,unavailable:0};
+  enabled.forEach(id=>{
+    const source=store.src[id];
+    const state=source.state==='ok'&&source.lastOk&&Date.now()-source.lastOk<3*(CFG.refreshSeconds[id]||600)*1000
+      ?'live':source.state==='stale'?'stale':'unavailable';
+    counts[state]++;
+  });
+  const total=enabled.length, readings=Object.values(store.r);
+  const percentages=Object.fromEntries(Object.entries(counts).map(([k,v])=>[k,total?Math.round(v*100/total):null]));
+  renderCityPulseQualityPanel({
+    readingStates:{percentages},
+    trust:{value:readings.length?Math.round(readings.reduce((sum,r)=>sum+trustScore(r),0)/readings.length):null},
+    providers:Object.fromEntries(Object.keys(SOURCES).map(id=>{
+      const source=store.src[id];
+      return [SOURCES[id].short,{
+        successRate:source.attempts?Math.round(source.successes*100/source.attempts):null,
+        p50Ms:qualityPercentile(source.latencies,.5),
+        p95Ms:qualityPercentile(source.latencies,.95),
+        attempts:source.attempts
+      }];
+    })),
+    authority:{approvalRate:null,timeToApprove:null},
+    updatedAt:Date.now()
+  });
+}
 
 /* ---------- navigation & wiring ---------- */
-const titles={dashboard:['City Overview','Live readings across city systems'],mobility:['Mobility Intelligence','Traffic flow & incident reports'],environment:['Environmental Intelligence','Weather & air quality (model-based)'],infrastructure:['Infrastructure Health','Provider incident reports'],human:['Human Activity','Public-demand data availability'],simulator:['What-If Simulator','Scenario projection from live baseline'],analytics:['Analytics','Readings, freshness & derived indicators'],reports:['Reports','Current-state report from available data'],settings:['Settings','City, refresh & sources']};
-document.querySelectorAll('.nav-item').forEach(item=>item.addEventListener('click',()=>{
+const titles={dashboard:['City Overview','Live readings across city systems'],mobility:['Mobility Intelligence','Traffic flow & incident reports'],environment:['Environmental Intelligence','Weather & air quality (model-based)'],infrastructure:['Infrastructure Health','Provider incident reports'],human:['Human Activity','Public-demand data availability'],simulator:['What-If Simulator','Scenario projection from live baseline'],analytics:['Analytics','Readings, freshness & derived indicators'],reports:['Reports','Current-state report from available data'],settings:['Settings','City, refresh & sources'],'system-quality':['Live System Quality','Provider health, reading freshness and trust']};
+function activateSection(item){
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); item.classList.add('active');
   const sec=item.dataset.section; document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); $(sec).classList.add('active');
   $('pageTitle').textContent=titles[sec][0]; $('pageSub').textContent=titles[sec][1]; if(sec==='settings') loadHealth();
-}));
+}
+document.querySelectorAll('.nav-item').forEach(item=>item.addEventListener('click',()=>activateSection(item)));
+
+async function loadSystemQualitySection(){
+  const nav=document.getElementById('nav'), content=document.querySelector('.content');
+  let section=null;
+  try{
+    const response=await fetch(apiBase()+'/dashboard/system-quality-section.html');
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const fragment=new DOMParser().parseFromString(await response.text(),'text/html');
+    section=fragment.getElementById('system-quality');
+    const style=fragment.querySelector('style');
+    if(!section||!style) throw new Error('System quality section is malformed');
+    section=section.cloneNode(true); section.classList.add('section');
+    document.head.appendChild(style.cloneNode(true));
+  }catch(e){
+    section=document.createElement('section'); section.id='system-quality'; section.className='section';
+    const message=document.createElement('div'); message.className='empty-panel';
+    message.textContent='System quality panel could not be loaded. Serve the dashboard with node server.js to load dashboard/system-quality-section.html.';
+    section.appendChild(message);
+  }
+  const navGroup=document.createElement('div'); navGroup.className='nav-group-label'; navGroup.textContent='Quality';
+  const navItem=document.createElement('div'); navItem.className='nav-item'; navItem.dataset.section='system-quality'; navItem.textContent='Live System Quality';
+  nav.append(navGroup,navItem);
+  navItem.addEventListener('click',()=>activateSection(navItem));
+  const footer=content.querySelector('footer'); content.insertBefore(section,footer);
+}
 $('refreshBtn').addEventListener('click',refreshAll);
 $('runSim').addEventListener('click',runSimulation); $('scenarioSelect').addEventListener('change',runSimulation); $('zoneSelect').addEventListener('change',runSimulation);
 $('genReport').addEventListener('click',buildReport);
@@ -1148,16 +1262,19 @@ $('dlJson').addEventListener('click',()=>{ const r=buildReport(); download('city
 
 function fillSettings(){
   $('setCity').value=CFG.city.name; $('setTz').value=CFG.city.timezone; $('setLat').value=CFG.city.latitude; $('setLon').value=CFG.city.longitude;
-  $('setRw').value=CFG.refreshSeconds.weather; $('setRa').value=CFG.refreshSeconds.airQuality; $('setRt').value=CFG.refreshSeconds.traffic; $('setApi').value=apiBase();
+  $('setRw').value=CFG.refreshSeconds.weather; $('setRa').value=CFG.refreshSeconds.airQuality; $('setRt').value=CFG.refreshSeconds.traffic; $('setApi').value=apiBase(); $('setNotices').value=CFG.noticesUrl||'';
   $('setEw').checked=!!CFG.sources.weather; $('setEa').checked=!!CFG.sources.airQuality; $('setEt').checked=!!CFG.sources.traffic; $('setEn').checked=!!CFG.sources.notices;
+  renderAuthorityLinks();
 }
 $('saveSet').addEventListener('click',()=>{
   const lat=parseFloat($('setLat').value), lon=parseFloat($('setLon').value);
   if(!(lat>=-90&&lat<=90&&lon>=-180&&lon<=180)){ alert('Latitude/longitude out of range'); return; }
   try{ new Intl.DateTimeFormat('en',{timeZone:$('setTz').value}); }catch{ alert('Unknown IANA timezone'); return; }
+  const noticesUrl=$('setNotices').value.trim();
+  if(noticesUrl){ try{ const u=new URL(noticesUrl); if(!['http:','https:'].includes(u.protocol)||u.username||u.password) throw new Error(); }catch{ alert('Authority server URL must be a valid HTTP(S) URL'); return; } }
   const ov={city:{...CFG.city,name:$('setCity').value.trim()||CFG.city.name,timezone:$('setTz').value.trim(),latitude:lat,longitude:lon},
     refreshSeconds:{weather:Math.max(300,+$('setRw').value||600),airQuality:Math.max(300,+$('setRa').value||900),traffic:Math.max(120,+$('setRt').value||300),notices:CFG.refreshSeconds.notices||60},
-    sources:{weather:$('setEw').checked,airQuality:$('setEa').checked,traffic:$('setEt').checked,notices:$('setEn').checked}, apiBase:$('setApi').value.trim()};
+    sources:{weather:$('setEw').checked,airQuality:$('setEa').checked,traffic:$('setEt').checked,notices:$('setEn').checked}, apiBase:$('setApi').value.trim(),noticesUrl:noticesUrl||'http://localhost:4000'};
   try{ localStorage.setItem('cp_cfg',JSON.stringify(ov)); }catch{}
   Object.assign(CFG,ov); resetStore(); fillSettings(); renderAll(); startAll();
 });
@@ -1166,13 +1283,31 @@ async function loadHealth(){
   const el=$('keyStatus');
   try{ const h=await getJson(apiBase()+'/api/health',4000); el.innerHTML=h.tomtomKeyConfigured?'<b>Backend reachable.</b> TomTom key is configured on the server (the key itself is never sent to this page).':'<b>Backend reachable, but TOMTOM_API_KEY is not set.</b> Copy .env.example to .env and add a key; traffic &amp; incidents stay Unavailable until then.'; }
   catch{ el.innerHTML='<b>Backend not reachable</b> at '+esc(apiBase()||'this origin')+'. Start it with <b>node server.js</b>. Weather and air quality work without it; traffic and incidents show Unavailable.'; }
+  const authority=$('authorityStatus');
+  try{ await getJson((CFG.noticesUrl||'http://localhost:4000')+'/api/health',4000); authority.textContent='Authority server reachable.'; }
+  catch{ authority.textContent='Authority server unavailable at '+(CFG.noticesUrl||'http://localhost:4000')+'.'; }
+}
+
+function renderAuthorityLinks(){
+  const base=CFG.noticesUrl||'http://localhost:4000';
+  try{
+    const url=new URL(base);
+    if(!['http:','https:'].includes(url.protocol)||url.username||url.password) throw new Error('Invalid authority URL');
+    $('submitReportLink').href=new URL('/',url).href;
+    $('authorityConsoleLink').href=new URL('/admin',url).href;
+  }catch{
+    $('submitReportLink').href='#'; $('authorityConsoleLink').href='#';
+    $('authorityStatus').textContent='Invalid authority server URL. Update it in Settings.';
+  }
 }
 
 /* ---------- boot ---------- */
 async function boot(){
   let local=null; try{ local=JSON.parse(localStorage.getItem('cp_cfg')||'null'); }catch{}
   try{ const r=await getJson((local&&local.apiBase!=null?local.apiBase:(location.protocol==='file:'?'http://localhost:3000':''))+'/api/config',3000); if(r&&r.city&&r.zones&&r.corridors){ CFG=Object.assign(CFG,r); store.backendUp=true; } }catch{}
-  if(local){ if(local.city) CFG.city=local.city; if(local.refreshSeconds) CFG.refreshSeconds=local.refreshSeconds; if(local.sources) CFG.sources=local.sources; if(local.apiBase!=null) CFG.apiBase=local.apiBase; }
+  if(local){ if(local.city) CFG.city=local.city; if(local.refreshSeconds) CFG.refreshSeconds=local.refreshSeconds; if(local.sources) CFG.sources=local.sources; if(local.apiBase!=null) CFG.apiBase=local.apiBase; if(local.noticesUrl!=null) CFG.noticesUrl=local.noticesUrl; }
+  renderAuthorityLinks();
+  await loadSystemQualitySection();
   $('zoneSelect').innerHTML=CFG.zones.map(z=>`<option>${esc(z.name)}</option>`).join('');
   fillSettings(); renderAll(); startAll();
   setInterval(()=>{ $('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour12:false,timeZone:CFG.city.timezone}); renderChip(); },1000);
