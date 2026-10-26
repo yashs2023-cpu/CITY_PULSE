@@ -610,6 +610,63 @@ async function getJson(url, ms=12000){
 }
 const apiBase = ()=> (CFG.apiBase!=null ? CFG.apiBase : (location.protocol==='file:' ? 'http://localhost:3000' : ''));
 
+/* ---------- trust score (L3) -----------------------------------------------
+   Score per reading 0–100, rounded to nearest integer.
+
+   Component       Weight  Rationale
+   ─────────────────────────────────────────────────────────────────────────
+   Freshness         40    Age of observedAt vs source update frequency.
+                           Full 40 if age ≤ 1× interval; decays linearly
+                           to 0 at 3× interval (stale threshold).
+   Source type       40    Sensor obs (ground truth) → Provider-reported
+                           (primary instrument) → Model estimate (reanalysis
+                           grid) → Derived (computed from provider values) →
+                           Authority-verified (human-reviewed report) →
+                           Scenario projection (labelled assumption, 0).
+   Completeness      20    One point per required field present (out of 8):
+                           metric, label, value, unit, location, source,
+                           observedAt, fetchedAt.  Each missing/null field
+                           deducts 2.5 pts.
+
+   Formula:  trustScore = round( F×0.40 + S×0.40 + C×0.20 )
+             where F, S, C are each scored 0–100.
+
+   Worked examples (all use weather interval = 600 s):
+   ① Model estimate, age 200 s, all 8 fields present:
+       F = (1 − 200/(3×600)) × 100 = 88.9  S = 40 (model)  C = 100
+       trustScore = round(88.9×0.40 + 40×0.40 + 100×0.20) = round(71.6) = 72
+   ② Provider-reported, age 1 500 s (2.5× interval 600 s), 1 field missing:
+       F = (1 − 1500/(3×600)) × 100 = 16.7  S = 80 (provider)  C = 87.5
+       trustScore = round(16.7×0.40 + 80×0.40 + 87.5×0.20) = round(57.2) = 57
+   ③ Derived, age 0 s (just fetched), all fields present:
+       F = 100  S = 20 (derived)  C = 100
+       trustScore = round(100×0.40 + 20×0.40 + 100×0.20) = round(68) = 68
+   ─────────────────────────────────────────────────────────────────────────
+   These weights are project-defined for the Software Metrics deliverable;
+   they are not calibrated to an external standard.
+*/
+const TRUST_SOURCE_SCORE = {sensor:100, provider:80, model:40, derived:20, authority:60, proj:0, na:0};
+function trustScore(rd){
+  if(!rd) return 0;
+  // Freshness (0–100): observedAt age vs 3× refresh interval
+  const iv  = (CFG.refreshSeconds[rd.srcId] || 600) * 1000;   // ms
+  const age = Date.now() - (Number.isFinite(rd.observedAt) ? rd.observedAt : Date.now());
+  const F   = Math.max(0, Math.min(100, (1 - age / (3 * iv)) * 100));
+  // Source type (0–100)
+  const S   = TRUST_SOURCE_SCORE[rd.dataType] ?? 0;
+  // Completeness (0–100): 8 required fields, 12.5 pts each
+  const FIELDS = ['metric','label','value','unit','location','source','observedAt','fetchedAt'];
+  const present = FIELDS.filter(k => rd[k] != null && rd[k] !== '').length;
+  const C   = (present / FIELDS.length) * 100;
+  return Math.round(F * 0.40 + S * 0.40 + C * 0.20);
+}
+function trustBand(score){
+  if(score >= 80) return {label:'High',   color:'var(--green)'};
+  if(score >= 55) return {label:'Medium', color:'var(--cyan)'};
+  if(score >= 30) return {label:'Low',    color:'var(--amber)'};
+  return            {label:'Poor',   color:'var(--red)'};
+}
+
 /* ---------- metric classification ---------- */
 const TYPES = {
   sensor:['Sensor obs','t-provider'], provider:['Provider-reported','t-provider'], model:['Model estimate','t-model'],
@@ -626,8 +683,10 @@ const store = { r:{}, series:{}, zones:[], corridors:[], incidents:null, notices
 Object.keys(SOURCES).forEach(id=> store.src[id]={state:'idle', loading:false, inflight:false, lastOk:null, lastTry:null, err:null, fails:0, timer:null});
 
 function putReading(srcId, metric, label, value, unit, observedAt, dataType, opts={}){
-  store.r[metric] = {metric, label, value, unit, location:opts.location||CFG.city.name, source:SOURCES[srcId].short,
+  const rd = {metric, label, value, unit, location:opts.location||CFG.city.name, source:SOURCES[srcId].short,
     observedAt, fetchedAt:Date.now(), dataType, srcId, text:opts.text||null, approxTime:!!opts.approxTime, note:opts.note||null};
+  rd.trustScore = trustScore(rd);
+  store.r[metric] = rd;
 }
 function readingStatus(rd){
   if(!rd) return 'unavailable';
@@ -774,7 +833,7 @@ async function run(id){
   s.inflight=true; s.loading=true; s.lastTry=Date.now(); renderChip(); const t0=performance.now();
   try{
     await FETCHERS[id]();
-    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; schedule(id, iv); logFetch(id,true,performance.now()-t0,null);
+    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; schedule(id, iv); logFetch(id,true,performance.now()-t0,null,sourceReadings(id));
   }catch(e){
     s.err=e.message||String(e); logFetch(id,false,performance.now()-t0,s.err);
     if(e.unavailable){ s.state=s.lastOk?'stale':'unavailable'; schedule(id, iv); }
@@ -783,7 +842,20 @@ async function run(id){
   }finally{ s.inflight=false; s.loading=false; onUpdate(id); }
 }
 /* best-effort outcome log to the backend (feeds uptime metrics); silent if backend is down */
-function logFetch(id,ok,ms,error){ if(!store.backendUp) return; try{ fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:id,ok,ms,error})}).catch(()=>{}); }catch{} }
+function sourceReadings(id){
+  return Object.values(store.r).filter(r=>r.srcId===id).map(r=>({
+    metric:r.metric, value:r.value, unit:r.unit, location:r.location,
+    observedAt:r.observedAt, dataType:r.dataType, status:readingStatus(r)
+  }));
+}
+function logFetch(id,ok,ms,error,readings){
+  if(!store.backendUp) return;
+  try{
+    const body={source:id,ok,ms,error};
+    if(ok&&Array.isArray(readings)&&readings.length) body.readings=readings;
+    fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});
+  }catch{}
+}
 function startAll(){ Object.keys(SOURCES).forEach(id=>{ store.src[id].inflight=false; run(id); }); }
 function refreshAll(){ Object.keys(SOURCES).forEach(id=>run(id)); }
 function resetStore(){ store.r={}; store.series={}; store.zones=[]; store.corridors=[]; store.incidents=null; store.notices=null; store.notices=null; store.session={cong:[]}; store.meta={};
@@ -970,7 +1042,7 @@ function derivedList(){
 }
 function renderAnalytics(){
   const rs=Object.values(store.r); $('anaTag').textContent=rs.length+' METRICS';
-  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
+  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Trust',render:r=>{ const score=trustScore(r), b=trustBand(score); return `<span style="color:${b.color};font-weight:700;font-family:var(--font-mono)">${score}</span><span style="color:var(--text-muted);font-size:10px"> ${b.label}</span>`; }},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
   const ch=[]; [['temp','Temperature',1],['aqi','US AQI',0],['pm25','PM2.5',1]].forEach(([k,l,dp])=>{ const s=store.series[k]; if(s&&s.points.length>1){ const a=s.points[0],b=s.points[s.points.length-1],span=(b.t-a.t)/3.6e6; ch.push({l,a,b,span,unit:s.unit,dp}); }});
   renderTable('anaChange',[{label:'Metric',render:r=>esc(r.l)},{label:'Then',render:r=>`${fmt(r.a.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.a.t,true)}</span>`},{label:'Now',render:r=>`${fmt(r.b.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.b.t,true)}</span>`},{label:`Δ over interval`,render:r=>`${(r.b.v-r.a.v>=0?'+':'')}${fmt(r.b.v-r.a.v,r.dp)} ${esc(r.unit)} (${fmt(r.span,0)} h)`}],ch,'Needs provider history — not available yet');
   renderTable('anaDerived',[{label:'Indicator',field:0},{label:'Current value',field:1},{label:'Formula',field:2},{label:'Inputs',field:3}],derivedList(),'No derived indicators yet');

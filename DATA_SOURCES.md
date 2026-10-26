@@ -28,11 +28,33 @@ This is a discovery check, not evidence that the agencies have no feeds.
 | CPCB | [CPCB website](https://cpcb.gov.in/) | The landing page was reachable, but this check did not identify a documented, directly queryable Chennai station API/feed. |
 | Chennai Metro Rail | [CMRL website](https://chennaimetrorail.org/) | Official website checked; no public real-time feed or GTFS endpoint was verified. |
 | Metropolitan Transport Corporation | [MTC website](https://mtcbus.tn.gov.in/) | Website advertises live tracking services for users, but no public API/GTFS-Realtime endpoint was verified. Do not ingest website UI data as an open feed. |
-| data.gov.in | [Open Government Data portal](https://www.data.gov.in/) | Portal and Chennai-targeted catalog pages returned HTTP 403 in this environment, so catalog contents could not be verified. |
-| Greater Chennai Corporation | [GCC website](https://chennaicorporation.gov.in/gcc/) | Official site was reachable; no documented public real-time transit or sensor-data API was identified in this check. |
 
 Next checks: obtain a station-level OpenAQ/CPCB response with timestamp, Chennai station identity and units; ask MTC/CMRL for an official feed or documented GTFS endpoint. Until then, sensor air quality and transit data remain unavailable.
 
-## Live verification
+## Live verification checklist
 
-Live provider checks were run on 2026-10-25; captured statuses, sample values, corridor matches, screenshots and limitations are recorded in [`docs/evidence/live-verification.md`](docs/evidence/live-verification.md). TomTom requests and Open-Meteo endpoints returned successfully.
+### Status: commands ready — run from your machine with the server running
+
+**A3-1 — Open-Meteo Forecast**
+```bash
+curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m&past_days=1&forecast_days=1&timeformat=unixtime&timezone=Asia%2FKolkata"
+```
+Pass: `current.time` is a unix integer and `current.temperature_2m` is a number. See `docs/evidence/A3-openmeteo.md`.
+
+**A3-2 — Open-Meteo Air Quality (CAMS)**
+```bash
+curl -s "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=13.0827&longitude=80.2707&current=us_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly=us_aqi,pm2_5&past_days=1&forecast_days=1&timeformat=unixtime&timezone=Asia%2FKolkata"
+```
+Pass: `current.time` present and `current.us_aqi` is a finite number. See `docs/evidence/A3-openmeteo.md`.
+
+**A1/A2 — TomTom Traffic (needs `TOMTOM_API_KEY` in `.env` and `node server.js` running)**
+```bash
+curl -s http://localhost:3000/api/traffic
+```
+Pass: all `corridors[].ok=true`; `incidents.ok=true`. Check each `matched` position against config.json coordinates. See `docs/evidence/A1-corridors.md` and `docs/evidence/A2-incidents.md`.
+
+**B — Sensor air quality (OpenAQ)**
+```bash
+curl -s "https://api.openaq.org/v3/locations?coordinates=13.0827,80.2707&radius=25000&limit=20"
+```
+Pass: at least one Chennai station with `lastUpdated` < 7 days and `pm25` parameter. See `docs/evidence/B-sensor-airquality.md`.

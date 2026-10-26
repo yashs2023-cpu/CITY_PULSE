@@ -1,0 +1,70 @@
+<!--
+CITY-PULSE T2 System Quality drop-in section.
+Ownership: T2.
+Integration: place this section inside project_citypulse.html and provide
+window.cityPulseQualityData = { providers: {...}, readingStates: {...}, trust: {...}, authority: {...} }.
+Do not hard-code live values in production; populate the object from the existing data layer/API.
+-->
+<section id="system-quality" class="system-quality-panel" aria-labelledby="system-quality-title">
+  <div class="sq-heading">
+    <div>
+      <p class="sq-eyebrow">SYSTEM QUALITY · T2</p>
+      <h2 id="system-quality-title">Live System Quality</h2>
+    </div>
+    <span id="sq-updated" class="sq-tag">Waiting for metrics</span>
+  </div>
+
+  <div class="sq-cards" role="list">
+    <article class="sq-card"><span>Live</span><strong id="sq-live">—</strong><small>Fresh readings</small></article>
+    <article class="sq-card"><span>Stale</span><strong id="sq-stale">—</strong><small>Past freshness threshold</small></article>
+    <article class="sq-card"><span>Unavailable</span><strong id="sq-unavailable">—</strong><small>No usable source</small></article>
+    <article class="sq-card"><span>Trust score</span><strong id="sq-trust">—</strong><small>From shared data layer</small></article>
+  </div>
+
+  <div class="sq-grid">
+    <article class="sq-panel">
+      <div class="sq-panel-title"><h3>Provider quality</h3><span>Success + latency</span></div>
+      <div id="sq-providers" class="sq-provider-list"><p class="sq-empty">No provider metrics loaded.</p></div>
+    </article>
+    <article class="sq-panel">
+      <div class="sq-panel-title"><h3>Authority workflow</h3><span>Audit-backed</span></div>
+      <div class="sq-workflow">
+        <div><span>Approval rate</span><strong id="sq-approval">—</strong></div>
+        <div><span>Time to approve</span><strong id="sq-approve-time">—</strong></div>
+      </div>
+      <p class="sq-note">Only display values emitted by the Authority workflow-metrics endpoint or audit records.</p>
+    </article>
+  </div>
+</section>
+
+<style>
+.system-quality-panel{margin:24px 0;padding:20px;border:1px solid #d9dee8;border-radius:16px;background:#fff;font-family:inherit}
+.sq-heading,.sq-panel-title{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sq-eyebrow{margin:0 0 4px;font-size:11px;letter-spacing:.12em;opacity:.65}.sq-heading h2{margin:0}
+.sq-tag{font-size:12px;padding:6px 9px;border:1px solid #d9dee8;border-radius:999px}.sq-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.sq-card,.sq-panel{padding:15px;border:1px solid #e4e8ef;border-radius:12px;background:#fafbfc}.sq-card span,.sq-card small,.sq-workflow span{display:block;font-size:12px;opacity:.7}.sq-card strong{display:block;font-size:25px;margin:5px 0}.sq-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}.sq-panel-title h3{margin:0}.sq-panel-title span{font-size:12px;opacity:.6}.sq-provider-list{margin-top:12px}.sq-provider{display:grid;grid-template-columns:1.2fr .8fr .8fr .8fr;gap:8px;padding:9px 0;border-top:1px solid #eceff4;font-size:13px}.sq-workflow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.sq-workflow div{padding:12px;border:1px solid #e4e8ef;border-radius:10px}.sq-workflow strong{display:block;margin-top:5px;font-size:20px}.sq-note,.sq-empty{font-size:12px;opacity:.65}.sq-note{margin-bottom:0}@media(max-width:760px){.sq-cards,.sq-grid{grid-template-columns:1fr 1fr}.sq-provider{grid-template-columns:1fr 1fr}}@media(max-width:500px){.sq-cards,.sq-grid{grid-template-columns:1fr}}
+</style>
+
+<script>
+(function(){
+  const d = window.cityPulseQualityData || {};
+  const states = d.readingStates || {};
+  const pct = states.percentages || {};
+  const set = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=(v===undefined||v===null?'—':v); };
+  set('sq-live', pct.live == null ? null : pct.live + '%');
+  set('sq-stale', pct.stale == null ? null : pct.stale + '%');
+  set('sq-unavailable', pct.unavailable == null ? null : pct.unavailable + '%');
+  set('sq-trust', d.trust && d.trust.value != null ? d.trust.value : null);
+  const auth=d.authority||{};
+  set('sq-approval', auth.approvalRate == null ? null : auth.approvalRate + '%');
+  set('sq-approve-time', auth.timeToApprove == null ? null : auth.timeToApprove);
+  if(d.updatedAt) set('sq-updated', 'Updated ' + new Date(d.updatedAt).toLocaleTimeString());
+  const list=document.getElementById('sq-providers');
+  const providers=d.providers||{};
+  const entries=Object.entries(providers);
+  if(entries.length){
+    list.innerHTML='<div class="sq-provider"><strong>Provider</strong><strong>Success</strong><strong>p50</strong><strong>p95</strong></div>' + entries.map(([name,x])=>
+      `<div class="sq-provider"><span>${name}</span><span>${x.successRate==null?'—':x.successRate+'%'}</span><span>${x.p50Ms==null?'—':Math.round(x.p50Ms)+' ms'}</span><span>${x.p95Ms==null?'—':Math.round(x.p95Ms)+' ms'}</span></div>`).join('');
+  }
+})();
+</script>

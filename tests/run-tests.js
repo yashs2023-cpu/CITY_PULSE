@@ -1,6 +1,6 @@
 // Fixture-based tests (NOT live API calls). Fixtures mimic documented provider response shapes.
 const fs=require('fs'), path=require('path'), {JSDOM}=require('jsdom'), assert=require('assert');
-const {parseFlow,parseIncidents}=require('../server.js');
+const {parseFlow,parseIncidents,pollOk,dashboardLogLine,server}=require('../server.js');
 const html=fs.readFileSync(path.join(__dirname,'../project_citypulse.html'),'utf8');
 let pass=0; const ok=(c,m)=>{ assert(c,m); pass++; console.log('  ✓',m); };
 const NOW=Math.floor(Date.now()/3600000)*3600; // top of the current hour (unix s)
@@ -19,7 +19,7 @@ const notices={fetchedAt:Date.now(),notices:[
   {id:'n2',type:'incident',category:'accident',title:'Verified crash',description:'Two vehicles, lane blocked',road:'MG Road',lat:13.061,lon:80.242,verifiedBy:'Authority (simulated role)'}]};
 const J=(b,s=200)=>Promise.resolve({ok:s<400,status:s,json:()=>Promise.resolve(b)});
 async function boot(router){
-  const dom=new JSDOM(html,{runScripts:'dangerously',url:'http://localhost:3000/',pretendToBeVisual:true,beforeParse(w){ w.fetch=(u,o)=>router(String(u)); w.alert=()=>{}; }});
+  const dom=new JSDOM(html,{runScripts:'dangerously',url:'http://localhost:3000/',pretendToBeVisual:true,beforeParse(w){ w.fetch=(u,o)=>router(String(u),o); w.alert=()=>{}; }});
   await new Promise(r=>setTimeout(r,400)); return dom;
 }
 (async()=>{
@@ -29,6 +29,27 @@ async function boot(router){
   const inc=parseIncidents({incidents:[{geometry:{type:'LineString',coordinates:[[80.2,13.0],[80.21,13.01]]},properties:{id:'a',iconCategory:'RoadWorks',events:[{description:'Roadworks'}],from:'P',to:'Q',delay:60}}]});
   ok(inc[0].category==='RoadWorks'&&inc[0].lat===13&&inc[0].lon===80.2,'parseIncidents extracts category, description and first coordinate');
   let threw=false; try{ parseIncidents({}); }catch{ threw=true; } ok(threw,'parseIncidents rejects malformed payload');
+  ok(pollOk({corridors:[{ok:true},{ok:true}],incidents:{ok:true}}),'pollOk accepts all-success traffic data');
+  ok(!pollOk({corridors:[{ok:true},{ok:false}],incidents:{ok:true}}),'pollOk rejects a failed corridor');
+  ok(!pollOk({corridors:[{ok:true}],incidents:{ok:false}}),'pollOk rejects failed incidents');
+  ok(!pollOk(null)&&!pollOk({corridors:[],incidents:{ok:true}})&&!pollOk({corridors:[{}],incidents:{}}),
+    'pollOk rejects empty or malformed traffic data');
+  const mappedLog=dashboardLogLine({source:'weather',ok:true,ms:12.8,readings:[{
+    metric:'temp',value:31.4,unit:'°C',location:'Chennai',observedAt:NOW*1000,dataType:'model',status:'live',ignored:'extra'
+  }]});
+  ok(mappedLog.source==='weather'&&mappedLog.ok&&mappedLog.ms===13&&mappedLog.readings[0].value===31.4&&
+    Object.keys(mappedLog.readings[0]).sort().join(',')==='dataType,location,metric,observedAt,status,unit,value',
+    'server log line maps readings to the seven supported fields');
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  try {
+    const port=server.address().port;
+    const oversized=await fetch(`http://127.0.0.1:${port}/api/log`,{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'weather',padding:'x'.repeat(4100)})
+    });
+    ok(oversized.status===413,'/api/log rejects request bodies over 4000 bytes with 413');
+  } finally {
+    await new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()));
+  }
 
   console.log('Success path (fixtures)');
   let urls=[];
@@ -63,6 +84,39 @@ async function boot(router){
   ok(Object.keys(dom.window.eval('store').r).every(k=>dom.window.eval('store').r[k].fetchedAt&&dom.window.eval('store').r[k].dataType),'every reading has fetchedAt + dataType');
   dom.window.close();
 
+  console.log('Dashboard metric logging');
+  const logRequests=[], config=JSON.parse(fs.readFileSync(path.join(__dirname,'../config.json'),'utf8'));
+  dom=await boot((u,o)=>{
+    if(u.endsWith('/api/config')) return J(config);
+    if(u.endsWith('/api/log')) { logRequests.push(JSON.parse(o.body)); return J({},204); }
+    if(u.includes('air-quality-api')) return J([aqLoc(42,118),aqLoc(40,110),aqLoc(41,112),aqLoc(43,120),aqLoc(44,121),aqLoc(40,111)]);
+    if(u.includes('api.open-meteo.com')) return J(wx);
+    if(u.endsWith('/api/traffic')) return J(tr);
+    if(u.endsWith('/api/public/notices')) return J(notices);
+    return J({},404);
+  });
+  const weatherLog=logRequests.find(r=>r.source==='weather'&&r.ok);
+  ok(weatherLog&&Array.isArray(weatherLog.readings)&&weatherLog.readings.length>0&&
+    weatherLog.readings.every(r=>typeof r.value==='number'&&Object.keys(r).sort().join(',')==='dataType,location,metric,observedAt,status,unit,value'),
+    'successful dashboard fetch sends numeric readings with only the seven supported fields');
+  ok(logRequests.every(r=>['source','ok','ms','error'].every(k=>Object.hasOwn(r,k))),
+    'dashboard log request preserves the existing four outcome fields');
+  dom.window.close();
+
+  const failureLogs=[];
+  dom=await boot((u,o)=>{
+    if(u.endsWith('/api/config')) return J(config);
+    if(u.endsWith('/api/log')) { failureLogs.push(JSON.parse(o.body)); return J({},204); }
+    if(u.includes('api.open-meteo.com')) return J({},500);
+    if(u.includes('air-quality-api')) return J({},500);
+    if(u.endsWith('/api/traffic')) return J({},500);
+    if(u.endsWith('/api/public/notices')) return J({},500);
+    return J({},404);
+  });
+  ok(failureLogs.length===4&&failureLogs.every(r=>!r.ok&&!Object.hasOwn(r,'readings')),
+    'failed dashboard fetches continue to log without readings');
+  dom.window.close();
+
   console.log('Classification: heavy traffic without any report');
   const tr2=JSON.parse(JSON.stringify(tr)); tr2.incidents.items=[]; 
   dom=await boot(u=>{ if(u.includes('air-quality-api')) return J({},500); if(u.includes('api.open-meteo')) return J({},500); if(u.endsWith('/api/traffic')) return J(tr2); if(u.endsWith('/api/public/notices')) return J({fetchedAt:Date.now(),notices:[]}); return J({},404); });
@@ -86,5 +140,85 @@ async function boot(router){
   d=dom.window.document; ok(dom.window.eval('store').r.temp&&dom.window.eval('store').src.weather.state==='stale','old reading retained and source marked stale');
   ok(d.getElementById('env-cards').textContent.includes('stale')&&dom.window.eval('store').r.temp.observedAt===NOW*1000,'stale label shown, original observation time preserved');
   dom.window.close();
+
+  // ── Trust Score (L3) ────────────────────────────────────────────────────
+  console.log('Trust score (L3)');
+  // Boot with a fresh success-path fixture to get real readings in the store
+  dom=await boot(u=>{
+    if(u.includes('air-quality-api')) return J([aqLoc(42,118),aqLoc(40,110),aqLoc(41,112),aqLoc(43,120),aqLoc(44,121),aqLoc(40,111)]);
+    if(u.includes('api.open-meteo.com')) return J(wx);
+    if(u.endsWith('/api/traffic')) return J(tr);
+    if(u.endsWith('/api/public/notices')) return J(notices);
+    if(u.endsWith('/api/config')||u.endsWith('/api/health')) return J({error:'x'},404);
+    return J({},404);
+  });
+  const s2=dom.window.eval('store');
+  // Every stored reading must have a trustScore that is an integer 0–100
+  ok(Object.values(s2.r).every(r=>Number.isInteger(r.trustScore)&&r.trustScore>=0&&r.trustScore<=100),
+    'every reading has an integer trustScore in [0,100]');
+  // model readings (weather/air quality) score ≤ provider-reported readings
+  // because source-type component is lower (model=40 vs provider=80)
+  const model = Object.values(s2.r).find(r=>r.dataType==='model');
+  const prov  = Object.values(s2.r).find(r=>r.dataType==='provider');
+  ok(model && prov && model.trustScore < prov.trustScore,
+    'model readings score lower than provider-reported readings (source-type weight)');
+  // derived readings score lower than model *when freshness is held equal*
+  // (at age=0, derived=20 source pts vs model=40 source pts, completeness equal)
+  const derivFresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'derived', srcId:'weather'});
+  })()`);
+  const modelFresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  ok(derivFresh < modelFresh,
+    'derived readings score lower than model readings when freshness is equal (source-type weight)');
+  // a freshly-fetched reading (age≈0) outscores a stale one with the same type
+  // simulate by building two fake readings at different ages via trustScore directly
+  const fresh = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  const staleRd = dom.window.eval(`(function(){
+    const now=Date.now(), old=now - 3*600*1000 - 1000; // beyond 3× interval
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:old, fetchedAt:now, dataType:'model', srcId:'weather'});
+  })()`);
+  ok(fresh > staleRd, 'fresh reading scores higher than a 3×-interval-old reading (freshness weight)');
+  // missing fields lower completeness
+  const complete = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:1,unit:'x',location:'l',source:'s',
+      observedAt:now, fetchedAt:now, dataType:'sensor', srcId:'weather'});
+  })()`);
+  const incomplete = dom.window.eval(`(function(){
+    const now=Date.now();
+    return trustScore({metric:'t',label:'t',value:null,unit:null,location:null,source:'s',
+      observedAt:now, fetchedAt:now, dataType:'sensor', srcId:'weather'});
+  })()`);
+  ok(complete > incomplete, 'reading with all 8 fields scores higher than one with 3 null fields (completeness weight)');
+  // Analytics table must show the Trust column
+  dom.window.document.querySelectorAll('.nav-item')[6].click(); // analytics nav
+  await new Promise(r=>setTimeout(r,100));
+  ok(dom.window.document.querySelector('#anaReadings th') &&
+     Array.from(dom.window.document.querySelectorAll('#anaReadings th')).some(th=>th.textContent==='Trust'),
+    'Analytics readings table has a Trust column');
+  const tempReading=s2.r.temp;
+  tempReading.observedAt=Date.now();
+  dom.window.eval('renderAnalytics()');
+  const trustCell=()=>Array.from(dom.window.document.querySelectorAll('#anaReadings tbody tr'))
+    .find(row=>row.cells[0].textContent==='Temperature').cells[3].textContent;
+  const displayedFresh=parseInt(trustCell(),10);
+  tempReading.observedAt=Date.now()-900*1000;
+  dom.window.eval('renderAnalytics()');
+  const displayedAged=parseInt(trustCell(),10);
+  ok(displayedAged<displayedFresh&&displayedAged===dom.window.eval('trustScore(store.r.temp)'),
+    'Analytics recalculates trust from current observedAt age when rendered');
+  dom.window.close();
+
   console.log(`\n${pass} checks passed`); process.exit(0);
 })().catch(e=>{ console.error('FAIL:',e.message); process.exit(1); });

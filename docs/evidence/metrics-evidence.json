@@ -1,0 +1,30 @@
+{
+  "testSuite": {"passed": 30, "executed": 30, "passRate": 100, "source": "existing project test run"},
+  "codeAnalysis": {
+    "eslintErrors": 0,
+    "eslintWarnings": 4,
+    "complexityFindings": [
+      {"scope": "createServer", "complexity": 16},
+      {"scope": "async function", "complexity": 59},
+      {"scope": "async arrow function", "complexity": 22},
+      {"scope": "async arrow function", "complexity": 22}
+    ],
+    "source": "existing ESLint/code-complexity run"
+  },
+  "providerQuality": [
+    {"provider": "Notices", "fetches": 112, "successRate": 84.8, "p50Ms": 13, "p95Ms": 46},
+    {"provider": "Traffic", "fetches": 29, "successRate": 0, "p50Ms": null, "p95Ms": null, "note": "TOMTOM_API_KEY was not configured during the run"},
+    {"provider": "Weather", "fetches": 18, "successRate": 100, "p50Ms": 705, "p95Ms": 2339},
+    {"provider": "Air Quality", "fetches": 16, "successRate": 100, "p50Ms": 916, "p95Ms": 1594}
+  ],
+  "notMeasuredYet": [
+    "repository-wide LOC",
+    "comment ratio",
+    "duplication",
+    "coverage percentage",
+    "live/stale/unavailable reading percentages from final stream",
+    "trust-score distribution from final data layer",
+    "authority approval rate",
+    "authority time-to-approve"
+  ]
+}
