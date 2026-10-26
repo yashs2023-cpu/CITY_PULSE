@@ -23,15 +23,15 @@ Use `dataType: "scenario_prediction"` for predictions and `dataType: "observed_o
 Optional: `node scripts/evaluate-simulator.js --json`
 
 ## Results
-Fill this section only from real log data:
-- Data period:
-- Sources:
-- Matched pairs (`n`):
-- MAE:
-- Bias:
-- Scenario-specific results:
 
-If there are no matched real pairs, report `n = 0` and that validation is inconclusive. Synthetic test fixtures test the calculation only and are not evidence of real-world predictive accuracy.
+- Data period: Not determined from valid prediction/outcome pairs.
+- Sources: `docs/evidence/fetch-log-sample.jsonl`
+- Total log rows: 296
+- Matched pairs (`n`): 0
+- MAE: Not calculable
+- Bias: Not calculable
+- Scenario-specific results: None
 
-## Limitations
-Traffic API values may be current snapshots rather than ground-truth future observations. Weather or traffic correlation is not causal evidence. Document data source, timestamp alignment and missing data.
+The evaluator reported 0 matched prediction/outcome pairs. Therefore, simulator validation is inconclusive for this sample. No predictive accuracy metrics are reported.
+
+Synthetic test fixtures test the calculation logic only and are not evidence of real-world predictive accuracy. 
