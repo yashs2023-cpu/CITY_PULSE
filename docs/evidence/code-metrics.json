@@ -1,0 +1,1215 @@
+{
+  "generatedAt": "2026-10-26T04:13:09.886Z",
+  "scope": "Repository source files excluding .git, node_modules, docs, legacy and coverage",
+  "files": [
+    {
+      "file": "admin/admin.html",
+      "loc": 18,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": [
+        {
+          "name": "api",
+          "startLine": 8,
+          "approximateCyclomatic": 17
+        },
+        {
+          "name": "onclick",
+          "startLine": 9,
+          "approximateCyclomatic": 13
+        },
+        {
+          "name": "catch",
+          "startLine": 9,
+          "approximateCyclomatic": 12
+        },
+        {
+          "name": "load",
+          "startLine": 10,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "d",
+          "startLine": 15,
+          "approximateCyclomatic": 5
+        },
+        {
+          "name": "catch",
+          "startLine": 15,
+          "approximateCyclomatic": 4
+        },
+        {
+          "name": "c",
+          "startLine": 16,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "catch",
+          "startLine": 16,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "onclick",
+          "startLine": 17,
+          "approximateCyclomatic": 2
+        }
+      ]
+    },
+    {
+      "file": "admin/report.html",
+      "loc": 21,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": [
+        {
+          "name": "fill",
+          "startLine": 14,
+          "approximateCyclomatic": 7
+        },
+        {
+          "name": "onclick",
+          "startLine": 16,
+          "approximateCyclomatic": 6
+        }
+      ]
+    },
+    {
+      "file": "admin/server.js",
+      "loc": 124,
+      "commentLines": 3,
+      "commentRatio": 0.0242,
+      "functions": [
+        {
+          "name": "catch",
+          "startLine": 5,
+          "approximateCyclomatic": 69
+        },
+        {
+          "name": "createServer",
+          "startLine": 7,
+          "approximateCyclomatic": 67
+        },
+        {
+          "name": "if",
+          "startLine": 16,
+          "approximateCyclomatic": 59
+        },
+        {
+          "name": "if",
+          "startLine": 19,
+          "approximateCyclomatic": 57
+        },
+        {
+          "name": "limited",
+          "startLine": 27,
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "send",
+          "startLine": 28,
+          "approximateCyclomatic": 56
+        },
+        {
+          "name": "readBody",
+          "startLine": 30,
+          "approximateCyclomatic": 58
+        },
+        {
+          "name": "if",
+          "startLine": 30,
+          "approximateCyclomatic": 59
+        },
+        {
+          "name": "actor",
+          "startLine": 31,
+          "approximateCyclomatic": 58
+        },
+        {
+          "name": "ip",
+          "startLine": 32,
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "if",
+          "startLine": 37,
+          "approximateCyclomatic": 54
+        },
+        {
+          "name": "if",
+          "startLine": 43,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "if",
+          "startLine": 47,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "if",
+          "startLine": 57,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "if",
+          "startLine": 74,
+          "approximateCyclomatic": 30
+        },
+        {
+          "name": "if",
+          "startLine": 91,
+          "approximateCyclomatic": 25
+        },
+        {
+          "name": "if",
+          "startLine": 94,
+          "approximateCyclomatic": 21
+        },
+        {
+          "name": "if",
+          "startLine": 98,
+          "approximateCyclomatic": 18
+        },
+        {
+          "name": "if",
+          "startLine": 103,
+          "approximateCyclomatic": 12
+        },
+        {
+          "name": "catch",
+          "startLine": 117,
+          "approximateCyclomatic": 8
+        },
+        {
+          "name": "if",
+          "startLine": 126,
+          "approximateCyclomatic": 4
+        }
+      ]
+    },
+    {
+      "file": "admin/store.js",
+      "loc": 115,
+      "commentLines": 0,
+      "commentRatio": 0,
+      "functions": [
+        {
+          "name": "openStore",
+          "startLine": 6,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "persist",
+          "startLine": 35,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "rows",
+          "startLine": 40,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "for",
+          "startLine": 61,
+          "approximateCyclomatic": 40
+        },
+        {
+          "name": "for",
+          "startLine": 65,
+          "approximateCyclomatic": 33
+        },
+        {
+          "name": "catch",
+          "startLine": 71,
+          "approximateCyclomatic": 29
+        },
+        {
+          "name": "addReport",
+          "startLine": 80,
+          "approximateCyclomatic": 26
+        },
+        {
+          "name": "saveReport",
+          "startLine": 93,
+          "approximateCyclomatic": 16
+        },
+        {
+          "name": "audit",
+          "startLine": 98,
+          "approximateCyclomatic": 10
+        },
+        {
+          "name": "ensureUser",
+          "startLine": 104,
+          "approximateCyclomatic": 7
+        },
+        {
+          "name": "getUser",
+          "startLine": 112,
+          "approximateCyclomatic": 3
+        }
+      ]
+    },
+    {
+      "file": "admin/workflow.js",
+      "loc": 37,
+      "commentLines": 3,
+      "commentRatio": 0.0811,
+      "functions": [
+        {
+          "name": "canTransition",
+          "startLine": 6,
+          "approximateCyclomatic": 34
+        },
+        {
+          "name": "isDate",
+          "startLine": 7,
+          "approximateCyclomatic": 33
+        },
+        {
+          "name": "str",
+          "startLine": 8,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "validateSubmission",
+          "startLine": 10,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "if",
+          "startLine": 23,
+          "approximateCyclomatic": 20
+        },
+        {
+          "name": "if",
+          "startLine": 25,
+          "approximateCyclomatic": 14
+        },
+        {
+          "name": "toPublic",
+          "startLine": 39,
+          "approximateCyclomatic": 1
+        }
+      ]
+    },
+    {
+      "file": "dashboard/system-quality-section.html",
+      "loc": 65,
+      "commentLines": 1,
+      "commentRatio": 0.0154,
+      "functions": [
+        {
+          "name": "media",
+          "startLine": 45,
+          "approximateCyclomatic": 21
+        },
+        {
+          "name": "media",
+          "startLine": 45,
+          "approximateCyclomatic": 21
+        },
+        {
+          "name": "function",
+          "startLine": 49,
+          "approximateCyclomatic": 21
+        },
+        {
+          "name": "set",
+          "startLine": 53,
+          "approximateCyclomatic": 18
+        },
+        {
+          "name": "if",
+          "startLine": 65,
+          "approximateCyclomatic": 5
+        }
+      ]
+    },
+    {
+      "file": "ecosystem.config.js",
+      "loc": 39,
+      "commentLines": 5,
+      "commentRatio": 0.1282,
+      "functions": []
+    },
+    {
+      "file": "project_citypulse.html",
+      "loc": 1061,
+      "commentLines": 74,
+      "commentRatio": 0.0697,
+      "functions": [
+        {
+          "name": "media",
+          "startLine": 168,
+          "approximateCyclomatic": 1
+        },
+        {
+          "name": "media",
+          "startLine": 193,
+          "approximateCyclomatic": 1
+        },
+        {
+          "name": "media",
+          "startLine": 253,
+          "approximateCyclomatic": 1
+        },
+        {
+          "name": "clamp",
+          "startLine": 586,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "num",
+          "startLine": 588,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "fmt",
+          "startLine": 589,
+          "approximateCyclomatic": 35
+        },
+        {
+          "name": "fmtTime",
+          "startLine": 590,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "if",
+          "startLine": 593,
+          "approximateCyclomatic": 40
+        },
+        {
+          "name": "fmtAge",
+          "startLine": 596,
+          "approximateCyclomatic": 39
+        },
+        {
+          "name": "getJson",
+          "startLine": 600,
+          "approximateCyclomatic": 36
+        },
+        {
+          "name": "if",
+          "startLine": 605,
+          "approximateCyclomatic": 35
+        },
+        {
+          "name": "catch",
+          "startLine": 608,
+          "approximateCyclomatic": 30
+        },
+        {
+          "name": "apiBase",
+          "startLine": 611,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "trustScore",
+          "startLine": 649,
+          "approximateCyclomatic": 47
+        },
+        {
+          "name": "trustBand",
+          "startLine": 663,
+          "approximateCyclomatic": 44
+        },
+        {
+          "name": "putReading",
+          "startLine": 685,
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "readingStatus",
+          "startLine": 691,
+          "approximateCyclomatic": 58
+        },
+        {
+          "name": "srcReason",
+          "startLine": 696,
+          "approximateCyclomatic": 57
+        },
+        {
+          "name": "locQS",
+          "startLine": 706,
+          "approximateCyclomatic": 60
+        },
+        {
+          "name": "hourlyUpTo",
+          "startLine": 708,
+          "approximateCyclomatic": 60
+        },
+        {
+          "name": "fetchWeather",
+          "startLine": 713,
+          "approximateCyclomatic": 53
+        },
+        {
+          "name": "add",
+          "startLine": 724,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "fetchAir",
+          "startLine": 732,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "add",
+          "startLine": 743,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "mk",
+          "startLine": 746,
+          "approximateCyclomatic": 56
+        },
+        {
+          "name": "fetchTraffic",
+          "startLine": 753,
+          "approximateCyclomatic": 53
+        },
+        {
+          "name": "catch",
+          "startLine": 756,
+          "approximateCyclomatic": 53
+        },
+        {
+          "name": "if",
+          "startLine": 757,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "if",
+          "startLine": 772,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "if",
+          "startLine": 780,
+          "approximateCyclomatic": 50
+        },
+        {
+          "name": "cnt",
+          "startLine": 782,
+          "approximateCyclomatic": 50
+        },
+        {
+          "name": "fetchNotices",
+          "startLine": 794,
+          "approximateCyclomatic": 59
+        },
+        {
+          "name": "catch",
+          "startLine": 797,
+          "approximateCyclomatic": 58
+        },
+        {
+          "name": "n",
+          "startLine": 801,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "km",
+          "startLine": 806,
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "nearCorridor",
+          "startLine": 807,
+          "approximateCyclomatic": 56
+        },
+        {
+          "name": "classifyCorridor",
+          "startLine": 813,
+          "approximateCyclomatic": 55
+        },
+        {
+          "name": "schedule",
+          "startLine": 827,
+          "approximateCyclomatic": 57
+        },
+        {
+          "name": "run",
+          "startLine": 828,
+          "approximateCyclomatic": 57
+        },
+        {
+          "name": "if",
+          "startLine": 831,
+          "approximateCyclomatic": 56
+        },
+        {
+          "name": "catch",
+          "startLine": 837,
+          "approximateCyclomatic": 54
+        },
+        {
+          "name": "if",
+          "startLine": 839,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "logFetch",
+          "startLine": 845,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "startAll",
+          "startLine": 846,
+          "approximateCyclomatic": 46
+        },
+        {
+          "name": "refreshAll",
+          "startLine": 847,
+          "approximateCyclomatic": 47
+        },
+        {
+          "name": "resetStore",
+          "startLine": 848,
+          "approximateCyclomatic": 47
+        },
+        {
+          "name": "badgeClass",
+          "startLine": 852,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "lineSVG",
+          "startLine": 858,
+          "approximateCyclomatic": 50
+        },
+        {
+          "name": "naBox",
+          "startLine": 865,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "tsChart",
+          "startLine": 866,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "hbars",
+          "startLine": 871,
+          "approximateCyclomatic": 50
+        },
+        {
+          "name": "metaHTML",
+          "startLine": 875,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "if",
+          "startLine": 878,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "rcard",
+          "startLine": 881,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "if",
+          "startLine": 883,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "ncard",
+          "startLine": 888,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "renderTable",
+          "startLine": 889,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "if",
+          "startLine": 891,
+          "approximateCyclomatic": 53
+        },
+        {
+          "name": "renderEnv",
+          "startLine": 900,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "renderMob",
+          "startLine": 918,
+          "approximateCyclomatic": 52
+        },
+        {
+          "name": "noticeRows",
+          "startLine": 949,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "renderNotices",
+          "startLine": 952,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "renderInfra",
+          "startLine": 960,
+          "approximateCyclomatic": 45
+        },
+        {
+          "name": "R",
+          "startLine": 963,
+          "approximateCyclomatic": 48
+        },
+        {
+          "name": "renderHuman",
+          "startLine": 982,
+          "approximateCyclomatic": 45
+        },
+        {
+          "name": "computeAlerts",
+          "startLine": 996,
+          "approximateCyclomatic": 46
+        },
+        {
+          "name": "renderDash",
+          "startLine": 1005,
+          "approximateCyclomatic": 44
+        },
+        {
+          "name": "renderStatus",
+          "startLine": 1017,
+          "approximateCyclomatic": 51
+        },
+        {
+          "name": "derivedList",
+          "startLine": 1022,
+          "approximateCyclomatic": 44
+        },
+        {
+          "name": "renderAnalytics",
+          "startLine": 1030,
+          "approximateCyclomatic": 45
+        },
+        {
+          "name": "if",
+          "startLine": 1033,
+          "approximateCyclomatic": 39
+        },
+        {
+          "name": "simBaseline",
+          "startLine": 1047,
+          "approximateCyclomatic": 45
+        },
+        {
+          "name": "if",
+          "startLine": 1051,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "if",
+          "startLine": 1052,
+          "approximateCyclomatic": 42
+        },
+        {
+          "name": "runSimulation",
+          "startLine": 1056,
+          "approximateCyclomatic": 40
+        },
+        {
+          "name": "if",
+          "startLine": 1061,
+          "approximateCyclomatic": 36
+        },
+        {
+          "name": "d",
+          "startLine": 1064,
+          "approximateCyclomatic": 33
+        },
+        {
+          "name": "if",
+          "startLine": 1071,
+          "approximateCyclomatic": 42
+        },
+        {
+          "name": "simCard",
+          "startLine": 1081,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "simNA",
+          "startLine": 1082,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "buildReport",
+          "startLine": 1086,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "if",
+          "startLine": 1096,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "if",
+          "startLine": 1098,
+          "approximateCyclomatic": 30
+        },
+        {
+          "name": "download",
+          "startLine": 1105,
+          "approximateCyclomatic": 35
+        },
+        {
+          "name": "overall",
+          "startLine": 1108,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "renderChip",
+          "startLine": 1113,
+          "approximateCyclomatic": 38
+        },
+        {
+          "name": "drawPulse",
+          "startLine": 1119,
+          "approximateCyclomatic": 39
+        },
+        {
+          "name": "if",
+          "startLine": 1121,
+          "approximateCyclomatic": 39
+        },
+        {
+          "name": "onUpdate",
+          "startLine": 1127,
+          "approximateCyclomatic": 36
+        },
+        {
+          "name": "if",
+          "startLine": 1128,
+          "approximateCyclomatic": 36
+        },
+        {
+          "name": "if",
+          "startLine": 1129,
+          "approximateCyclomatic": 35
+        },
+        {
+          "name": "if",
+          "startLine": 1130,
+          "approximateCyclomatic": 34
+        },
+        {
+          "name": "if",
+          "startLine": 1131,
+          "approximateCyclomatic": 33
+        },
+        {
+          "name": "renderAll",
+          "startLine": 1134,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "fillSettings",
+          "startLine": 1149,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "loadHealth",
+          "startLine": 1165,
+          "approximateCyclomatic": 19
+        },
+        {
+          "name": "boot",
+          "startLine": 1172,
+          "approximateCyclomatic": 16
+        },
+        {
+          "name": "if",
+          "startLine": 1174,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "if",
+          "startLine": 1175,
+          "approximateCyclomatic": 6
+        }
+      ]
+    },
+    {
+      "file": "scripts/evaluate-simulator.js",
+      "loc": 1,
+      "commentLines": 5,
+      "commentRatio": 5,
+      "functions": []
+    },
+    {
+      "file": "scripts/log-analysis.js",
+      "loc": 131,
+      "commentLines": 17,
+      "commentRatio": 0.1298,
+      "functions": [
+        {
+          "name": "if",
+          "startLine": 29,
+          "approximateCyclomatic": 41
+        },
+        {
+          "name": "for",
+          "startLine": 33,
+          "approximateCyclomatic": 40
+        },
+        {
+          "name": "pct",
+          "startLine": 38,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "detectGaps",
+          "startLine": 73,
+          "approximateCyclomatic": 26
+        },
+        {
+          "name": "for",
+          "startLine": 79,
+          "approximateCyclomatic": 24
+        },
+        {
+          "name": "if",
+          "startLine": 81,
+          "approximateCyclomatic": 23
+        },
+        {
+          "name": "extractMetricReadings",
+          "startLine": 90,
+          "approximateCyclomatic": 22
+        },
+        {
+          "name": "for",
+          "startLine": 92,
+          "approximateCyclomatic": 22
+        },
+        {
+          "name": "for",
+          "startLine": 94,
+          "approximateCyclomatic": 20
+        },
+        {
+          "name": "if",
+          "startLine": 106,
+          "approximateCyclomatic": 16
+        },
+        {
+          "name": "if",
+          "startLine": 118,
+          "approximateCyclomatic": 15
+        },
+        {
+          "name": "if",
+          "startLine": 141,
+          "approximateCyclomatic": 7
+        },
+        {
+          "name": "if",
+          "startLine": 152,
+          "approximateCyclomatic": 5
+        }
+      ]
+    },
+    {
+      "file": "scripts/log-summary.js",
+      "loc": 14,
+      "commentLines": 1,
+      "commentRatio": 0.0714,
+      "functions": [
+        {
+          "name": "pct",
+          "startLine": 8,
+          "approximateCyclomatic": 9
+        }
+      ]
+    },
+    {
+      "file": "scripts/t2-code-metrics.js",
+      "loc": 107,
+      "commentLines": 15,
+      "commentRatio": 0.1402,
+      "functions": [
+        {
+          "name": "walk",
+          "startLine": 26,
+          "approximateCyclomatic": 49
+        },
+        {
+          "name": "stripStrings",
+          "startLine": 36,
+          "approximateCyclomatic": 45
+        },
+        {
+          "name": "fileMetrics",
+          "startLine": 40,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "for",
+          "startLine": 48,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "if",
+          "startLine": 51,
+          "approximateCyclomatic": 41
+        },
+        {
+          "name": "duplicationMetric",
+          "startLine": 89,
+          "approximateCyclomatic": 12
+        },
+        {
+          "name": "for",
+          "startLine": 92,
+          "approximateCyclomatic": 12
+        },
+        {
+          "name": "for",
+          "startLine": 98,
+          "approximateCyclomatic": 11
+        },
+        {
+          "name": "tryEslint",
+          "startLine": 109,
+          "approximateCyclomatic": 5
+        },
+        {
+          "name": "catch",
+          "startLine": 113,
+          "approximateCyclomatic": 4
+        }
+      ]
+    },
+    {
+      "file": "server.js",
+      "loc": 128,
+      "commentLines": 12,
+      "commentRatio": 0.0938,
+      "functions": [
+        {
+          "name": "logLine",
+          "startLine": 8,
+          "approximateCyclomatic": 63
+        },
+        {
+          "name": "cfg",
+          "startLine": 9,
+          "approximateCyclomatic": 64
+        },
+        {
+          "name": "getJson",
+          "startLine": 15,
+          "approximateCyclomatic": 69
+        },
+        {
+          "name": "parseFlow",
+          "startLine": 21,
+          "approximateCyclomatic": 71
+        },
+        {
+          "name": "n",
+          "startLine": 23,
+          "approximateCyclomatic": 70
+        },
+        {
+          "name": "distance",
+          "startLine": 27,
+          "approximateCyclomatic": 68
+        },
+        {
+          "name": "parseIncidents",
+          "startLine": 36,
+          "approximateCyclomatic": 67
+        },
+        {
+          "name": "traffic",
+          "startLine": 46,
+          "approximateCyclomatic": 43
+        },
+        {
+          "name": "send",
+          "startLine": 61,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "if",
+          "startLine": 62,
+          "approximateCyclomatic": 37
+        },
+        {
+          "name": "if",
+          "startLine": 67,
+          "approximateCyclomatic": 34
+        },
+        {
+          "name": "if",
+          "startLine": 71,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "catch",
+          "startLine": 73,
+          "approximateCyclomatic": 29
+        },
+        {
+          "name": "if",
+          "startLine": 75,
+          "approximateCyclomatic": 28
+        },
+        {
+          "name": "await",
+          "startLine": 76,
+          "approximateCyclomatic": 24
+        },
+        {
+          "name": "if",
+          "startLine": 87,
+          "approximateCyclomatic": 17
+        },
+        {
+          "name": "catch",
+          "startLine": 104,
+          "approximateCyclomatic": 6
+        },
+        {
+          "name": "startPoller",
+          "startLine": 114,
+          "approximateCyclomatic": 5
+        },
+        {
+          "name": "if",
+          "startLine": 115,
+          "approximateCyclomatic": 5
+        },
+        {
+          "name": "run",
+          "startLine": 116,
+          "approximateCyclomatic": 4
+        },
+        {
+          "name": "catch",
+          "startLine": 126,
+          "approximateCyclomatic": 4
+        },
+        {
+          "name": "if",
+          "startLine": 136,
+          "approximateCyclomatic": 3
+        }
+      ]
+    },
+    {
+      "file": "tests/admin-tests.js",
+      "loc": 67,
+      "commentLines": 1,
+      "commentRatio": 0.0149,
+      "functions": [
+        {
+          "name": "ok",
+          "startLine": 4,
+          "approximateCyclomatic": 18
+        },
+        {
+          "name": "call",
+          "startLine": 14,
+          "approximateCyclomatic": 18
+        }
+      ]
+    },
+    {
+      "file": "tests/run-tests.js",
+      "loc": 141,
+      "commentLines": 12,
+      "commentRatio": 0.0851,
+      "functions": [
+        {
+          "name": "ok",
+          "startLine": 5,
+          "approximateCyclomatic": 19
+        },
+        {
+          "name": "aqLoc",
+          "startLine": 11,
+          "approximateCyclomatic": 22
+        },
+        {
+          "name": "J",
+          "startLine": 20,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "boot",
+          "startLine": 21,
+          "approximateCyclomatic": 31
+        },
+        {
+          "name": "JSDOM",
+          "startLine": 22,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "fetch",
+          "startLine": 22,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "alert",
+          "startLine": 22,
+          "approximateCyclomatic": 32
+        },
+        {
+          "name": "eval",
+          "startLine": 113,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "eval",
+          "startLine": 118,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "eval",
+          "startLine": 127,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "eval",
+          "startLine": 132,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "eval",
+          "startLine": 139,
+          "approximateCyclomatic": 3
+        },
+        {
+          "name": "eval",
+          "startLine": 144,
+          "approximateCyclomatic": 3
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "loc": 2069,
+    "comments": 149,
+    "functions": 215,
+    "commentRatio": 0.072
+  },
+  "duplication": {
+    "totalNonBlankLinesScanned": 2218,
+    "repeatedSixLineBlocks": 3,
+    "duplicatedLineEstimate": 36,
+    "duplicationRatioEstimate": 0.0162
+  },
+  "eslint": {
+    "available": false,
+    "reason": "spawnSync npx.cmd EINVAL"
+  }
+}

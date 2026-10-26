@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-10-26T04:14:52.893Z",
+  "logFiles": [],
+  "providerQuality": {},
+  "readingStates": {
+    "counts": {
+      "live": 0,
+      "stale": 0,
+      "unavailable": 0,
+      "other": 0
+    },
+    "percentages": null,
+    "note": "No recognised reading-state records found; do not infer from provider request success."
+  },
+  "authorityWorkflow": {
+    "status": "pending-source-run",
+    "filesInspected": [],
+    "note": "Approval rate and time-to-approve must come from the Authority workflow-metrics endpoint or audit records; they are not inferred from fetch logs."
+  }
+}
