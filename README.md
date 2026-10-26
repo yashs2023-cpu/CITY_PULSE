@@ -6,7 +6,7 @@ Software Metrics project. The original nine-section prototype is preserved; ever
 
 ## Trust Score (per reading)
 
-Every reading in the live-data store carries a `trustScore` (integer 0–100). It is computed from three components:
+Every reading in the live-data store carries a `trustScore` (integer 0–100). The Analytics table recalculates it each time it renders, using the reading's current age (`Date.now() − observedAt`), so the freshness component and total score decrease as a reading ages. The stored score is a fetch-time snapshot; the Analytics display is dynamic. It is computed from three components:
 
 | Component | Weight | How it is scored (0–100) |
 |---|---|---|

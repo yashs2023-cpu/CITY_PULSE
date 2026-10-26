@@ -39,6 +39,7 @@ npm test
 | `TOMTOM_API_KEY` | Yes | Free key from https://developer.tomtom.com — enables Traffic Flow + Incidents |
 | `PORT` | No (default 3000) | Dashboard server port |
 | `TRAFFIC_CACHE_SECONDS` | No (default 120) | Server-side TomTom response cache |
+| `TRAFFIC_POLL_SECONDS` | No (default 120) | Server-side traffic poll interval |
 | `ADMIN_USER` | Yes | Admin login username (authority server) |
 | `ADMIN_PASSWORD` | Yes | Admin login password — must be set or login is refused |
 | `ADMIN_PORT` | No (default 4000) | Authority server port |
@@ -81,7 +82,13 @@ pm2 monit                     # live CPU/RAM monitor
 
 ## 4. Log Filling Without a Browser
 
-`server.js` includes a **server-side traffic poller** that runs automatically when started via `node server.js` or PM2. It calls `traffic()` every `TRAFFIC_CACHE_SECONDS` (default 120 s) and writes a log line with `origin: "server-poller"` to `logs/fetch-log.jsonl`.
+`server.js` includes a **server-side traffic poller** that runs automatically when started via `node server.js` or PM2. It calls `traffic()` every `TRAFFIC_POLL_SECONDS` (default 120 s) and writes a log line with `origin: "server-poller"` to `logs/fetch-log.jsonl`. The poller uses the normal traffic cache rather than forcing a fresh set of TomTom requests each time.
+
+For runs longer than a few hours, set the poll interval to at least 300 seconds to reduce TomTom API usage:
+
+```dotenv
+TRAFFIC_POLL_SECONDS=300
+```
 
 - If `TOMTOM_API_KEY` is not set the poller logs one idle line and stops — it does not loop.
 - Weather and air-quality are Open-Meteo (browser-direct, no key) — they are not polled server-side to avoid redundant model-grid calls; they are logged by the dashboard when a browser tab is open.
