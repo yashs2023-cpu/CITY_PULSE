@@ -49,7 +49,7 @@ Run by T1 (Shivani) on 2026-10-26, from a local machine with `node server.js` ru
 | A3-2: Open-Meteo Air Quality (CAMS) | **Pass.** `current.time` present (1793008800); us_aqi 154, pm2_5 62.2 µg/m³. Model estimate, not a sensor. | 2026-10-26 | [A3-openmeteo.md](docs/evidence/A3-openmeteo.md) |
 | B: Sensor air quality (OpenAQ) | **Found**, with a data lag of about 3 days. Not yet integrated. | 2026-10-26 | [B-sensor-airquality.md](docs/evidence/B-sensor-airquality.md) |
 | C1: Transit open data | **No verified feed.** | 2026-10-26 | [C1-transit.md](docs/evidence/C1-transit.md) |
-| D1: Log analysis | **C2 trial run done** (250 log lines, 100% success on all four sources, no failure causes, large downtime gaps). Final figures to be updated after the C3 run. | 2026-10-26 | [D1-log-analysis.md](docs/evidence/D1-log-analysis.md), [fetch-log-sample.jsonl](docs/evidence/fetch-log-sample.jsonl) |
+| D1: Log analysis | **Final run (C3) done.** 287 log lines; 100% success on all four sources (n = 136 / 18 / 22 / 111); no failure causes. Continuous stretch about 1 hour; airQuality n < 20. Gaps are logger downtime. | 2026-10-26 | [D1-log-analysis.md](docs/evidence/D1-log-analysis.md), [fetch-log-sample.jsonl](docs/evidence/fetch-log-sample.jsonl) |
 
 Not checked: `hourly.time` array length for the Open-Meteo calls; CPCB via data.gov.in.
 
