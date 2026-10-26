@@ -650,7 +650,7 @@ function trustScore(rd){
   if(!rd) return 0;
   // Freshness (0–100): observedAt age vs 3× refresh interval
   const iv  = (CFG.refreshSeconds[rd.srcId] || 600) * 1000;   // ms
-  const age = Date.now() - (Number.isFinite(rd.observedAt) ? rd.observedAt : Date.now());
+  const age = (rd.fetchedAt || Date.now()) - (rd.observedAt || rd.fetchedAt || Date.now());
   const F   = Math.max(0, Math.min(100, (1 - age / (3 * iv)) * 100));
   // Source type (0–100)
   const S   = TRUST_SOURCE_SCORE[rd.dataType] ?? 0;
@@ -833,7 +833,7 @@ async function run(id){
   s.inflight=true; s.loading=true; s.lastTry=Date.now(); renderChip(); const t0=performance.now();
   try{
     await FETCHERS[id]();
-    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; schedule(id, iv); logFetch(id,true,performance.now()-t0,null,sourceReadings(id));
+    s.state='ok'; s.lastOk=Date.now(); s.err=null; s.fails=0; schedule(id, iv); logFetch(id,true,performance.now()-t0,null);
   }catch(e){
     s.err=e.message||String(e); logFetch(id,false,performance.now()-t0,s.err);
     if(e.unavailable){ s.state=s.lastOk?'stale':'unavailable'; schedule(id, iv); }
@@ -842,20 +842,7 @@ async function run(id){
   }finally{ s.inflight=false; s.loading=false; onUpdate(id); }
 }
 /* best-effort outcome log to the backend (feeds uptime metrics); silent if backend is down */
-function sourceReadings(id){
-  return Object.values(store.r).filter(r=>r.srcId===id).map(r=>({
-    metric:r.metric, value:r.value, unit:r.unit, location:r.location,
-    observedAt:r.observedAt, dataType:r.dataType, status:readingStatus(r)
-  }));
-}
-function logFetch(id,ok,ms,error,readings){
-  if(!store.backendUp) return;
-  try{
-    const body={source:id,ok,ms,error};
-    if(ok&&Array.isArray(readings)&&readings.length) body.readings=readings;
-    fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});
-  }catch{}
-}
+function logFetch(id,ok,ms,error){ if(!store.backendUp) return; try{ fetch(apiBase()+'/api/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:id,ok,ms,error})}).catch(()=>{}); }catch{} }
 function startAll(){ Object.keys(SOURCES).forEach(id=>{ store.src[id].inflight=false; run(id); }); }
 function refreshAll(){ Object.keys(SOURCES).forEach(id=>run(id)); }
 function resetStore(){ store.r={}; store.series={}; store.zones=[]; store.corridors=[]; store.incidents=null; store.notices=null; store.notices=null; store.session={cong:[]}; store.meta={};
@@ -1042,7 +1029,7 @@ function derivedList(){
 }
 function renderAnalytics(){
   const rs=Object.values(store.r); $('anaTag').textContent=rs.length+' METRICS';
-  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Trust',render:r=>{ const score=trustScore(r), b=trustBand(score); return `<span style="color:${b.color};font-weight:700;font-family:var(--font-mono)">${score}</span><span style="color:var(--text-muted);font-size:10px"> ${b.label}</span>`; }},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
+  renderTable('anaReadings',[{label:'Metric',render:r=>esc(r.label)},{label:'Value',render:r=>esc((r.text!=null?r.text:fmt(r.value,r.unit==='%'||r.unit==='km/h'||r.unit==='AQI'||!r.unit?0:1))+(r.unit?' '+r.unit:''))},{label:'Type',render:r=>`<span class="tag ${TYPES[r.dataType][1]}">${TYPES[r.dataType][0]}</span>`},{label:'Trust',render:r=>{ const b=trustBand(r.trustScore??0); return `<span style="color:${b.color};font-weight:700;font-family:var(--font-mono)">${r.trustScore??'—'}</span><span style="color:var(--text-muted);font-size:10px"> ${b.label}</span>`; }},{label:'Source',render:r=>esc(r.source)},{label:'Observed',render:r=>(r.approxTime?'≈ ':'')+esc(fmtTime(r.observedAt,true))},{label:'Fetched',render:r=>esc(fmtTime(r.fetchedAt))},{label:'Status',render:r=>badge(readingStatus(r))}],rs,'No valid readings yet — see Source Freshness');
   const ch=[]; [['temp','Temperature',1],['aqi','US AQI',0],['pm25','PM2.5',1]].forEach(([k,l,dp])=>{ const s=store.series[k]; if(s&&s.points.length>1){ const a=s.points[0],b=s.points[s.points.length-1],span=(b.t-a.t)/3.6e6; ch.push({l,a,b,span,unit:s.unit,dp}); }});
   renderTable('anaChange',[{label:'Metric',render:r=>esc(r.l)},{label:'Then',render:r=>`${fmt(r.a.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.a.t,true)}</span>`},{label:'Now',render:r=>`${fmt(r.b.v,r.dp)} <span style="color:var(--text-muted)">${fmtTime(r.b.t,true)}</span>`},{label:`Δ over interval`,render:r=>`${(r.b.v-r.a.v>=0?'+':'')}${fmt(r.b.v-r.a.v,r.dp)} ${esc(r.unit)} (${fmt(r.span,0)} h)`}],ch,'Needs provider history — not available yet');
   renderTable('anaDerived',[{label:'Indicator',field:0},{label:'Current value',field:1},{label:'Formula',field:2},{label:'Inputs',field:3}],derivedList(),'No derived indicators yet');
