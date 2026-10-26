@@ -75,7 +75,45 @@ These parameters are **demonstration assumptions, not calibrated or validated**.
 
 ## Known limitations
 - Open-Meteo "current" and CAMS values are model grid estimates (CAMS is coarse over India); zones share grid cells, so zone values are near-identical.
-- TomTom flow has no observation timestamp (fetch time shown, marked ≈) and no history; trend is session-only.
-- Traffic/incidents require a TomTom key; free-tier daily limits apply.
-- No verified Chennai public-transit, crowd, utility-outage or noise feed is configured.
-- Simulator coefficients are unvalidated assumptions.
+
+  ## T4 — User Interface, Quality Assurance and Documentation
+
+### 1. Role-Based Access Control
+- Implemented a viewer read-only interface by hiding approval, rejection, and resolution controls from viewer accounts.
+- Ensured that administrative decision controls remain available to authorized admin/officer users.
+- Verified that unauthorized viewer actions through the API are rejected with HTTP 403 Forbidden responses.
+
+### 2. Browser Compatibility Testing
+- Tested the CityPulse dashboard in Google Chrome and Microsoft Edge.
+- Checked the visibility and rendering of dashboard components, including the sidebar, status cards, charts, active alerts, and data availability indicators.
+- Evaluated the responsive layout at mobile widths and documented analytics table layout issues.
+
+### 3. Functional and Workflow Testing
+- Tested citizen report submission and form validation.
+- Verified the authority workflow, including report review, change requests, resubmission, approval, and resolution.
+- Checked that report status and timestamps persist after refreshing the authority console.
+- Verified that resolved notices no longer appear as active notices on the public dashboard.
+- Tested keyboard navigation, visible focus indicators, and form validation feedback.
+- Evaluated offline and slow-network behaviour.
+
+### 4. Automated Testing and Access Verification
+- Recorded **69 passing automated checks**:
+  - 39 main application checks.
+  - 30 authority/admin checks.
+- Verified viewer permissions and unauthorized decision-action restrictions.
+- Tested application behaviour involving report handling, provider failures, stale readings, trust scores, audit logging, and abuse limits.
+
+### 5. Accessibility Review
+- Conducted an accessibility scan using the WAVE browser extension.
+- Recorded colour-contrast and form-label findings for further investigation.
+- Documented accessibility observations alongside manual keyboard-navigation and focus-visibility checks.
+
+### 6. Project Documentation
+Prepared and maintained the following project documentation:
+
+- `docs/browser-test-report.md` — browser compatibility, functional testing, automated test results, and accessibility findings.
+- `docs/demo-script.md` — step-by-step demonstration flow for the CityPulse application.
+- `docs/qa-sheet.md` — project questions and answers to support technical review and demonstration.
+
+### 7. Presentation Support
+Organised technical information about role-based access, browser testing, quality assurance, and automated test results to support explanation of the T4 contribution during the project review.
